@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const gameFont = Jersey_10({
+const gameFont = Pixelify_Sans({
   subsets: ["latin"],
   variable: "--font-game",
   weight: ["400"],
