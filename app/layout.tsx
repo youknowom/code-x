@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 const GameFont = Pixelify_Sans({
   subsets: ["latin"],
-  variable: "--font-game-font",
+  variable: "--font-game",
 });
 
 const inter = Inter({
