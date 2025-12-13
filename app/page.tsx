@@ -1,7 +1,11 @@
 import React from "react";
 
-function page() {
-  return <div>page</div>;
-}
+export default function Home() {
+  return (
+    <div>
+      {/* Header */}
 
-export default page;
+      {/* Hero Section */}
+    </div>
+  );
+}
