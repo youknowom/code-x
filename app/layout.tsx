@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Pixelify_Sans, Inter } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Pixelify_Sans,
+  Inter,
+  Jersey_10,
+} from "next/font/google";
 import "./globals.css";
 import Provider from "./Provide";
 
@@ -13,9 +19,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const gameFont = Pixelify_Sans({
+const gameFont = Jersey_10({
   subsets: ["latin"],
   variable: "--font-game",
+  weight: ["400"],
 });
 
 const inter = Inter({
