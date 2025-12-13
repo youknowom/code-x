@@ -1,13 +1,20 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 
 function Header() {
   return (
     <div className="p-4 max-w-7xl">
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center cursor-pointer">
         <Image src={"/logo.png"} alt="logo" width={40} height={40} />
         <h2 className="font-bold text-2xl font-game">CodeTree</h2>
       </div>
+      {/* Navbar */}
+
+      {/* Signuo Button */}
+      <Button className="font-game text-2xl" variant={"pixel"}>
+        Signup
+      </Button>
     </div>
   );
 }
