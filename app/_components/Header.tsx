@@ -11,6 +11,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 const courses = [
   {
@@ -52,7 +53,7 @@ const courses = [
   {
     id: 7,
     name: "Generative AI",
-    desc: "Explore LLMs, prompt engineering, and GenAI apps.",
+    desc: "Explore prompt engineering, LLMs, and GenAI apps.",
     path: "/course/7/detail",
   },
   {
@@ -69,7 +70,9 @@ const courses = [
   },
 ];
 
-function Header() {
+export default function Header() {
+  const { user } = useUser();
+
   return (
     <div className="p-4 max-w-7xl mx-auto flex justify-between items-center w-full">
       {/* Logo */}
@@ -85,7 +88,7 @@ function Header() {
           <NavigationMenuItem>
             <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid md:grid-cols-2 sm:w-[400px] md:w-[500px] lg:w-[600px]">
+              <ul className="grid md:grid-cols-2 sm:w-[400px] md:w-[500px] lg:w-[600px] p-4 gap-2">
                 {courses.map((course) => (
                   <li key={course.id}>
                     <Link
@@ -125,11 +128,18 @@ function Header() {
       </NavigationMenu>
 
       {/* CTA */}
-      <Button className="font-game text-2xl" variant="pixel">
-        Signup
-      </Button>
+      {!user ? (
+        <Button asChild className="font-game text-2xl" variant="pixel">
+          <Link href="/sign-in">Signup</Link>
+        </Button>
+      ) : (
+        <div className="flex gap-4 items-center">
+          <Button asChild className="font-game text-2xl" variant="pixel">
+            <Link href="/dashboard">Dashboard</Link>
+          </Button>
+          <UserButton />
+        </div>
+      )}
     </div>
   );
 }
-
-export default Header;
