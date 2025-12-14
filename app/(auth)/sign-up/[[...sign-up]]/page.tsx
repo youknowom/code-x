@@ -2,6 +2,7 @@
 
 import * as Clerk from "@clerk/elements/common";
 import * as SignUp from "@clerk/elements/sign-up";
+import Image from "next/image";
 
 export default function SignUpPage() {
   return (
@@ -11,17 +12,8 @@ export default function SignUpPage() {
           name="start"
           className="mx-auto w-full sm:w-96 space-y-6 bg-zinc-800 px-4 py-8 border-4 border-black shadow-[8px_8px_0_0_#000]"
         >
-          <header className="text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 40 40"
-              className="mx-auto h-12 w-12 text-yellow-400"
-              aria-hidden
-            >
-              <rect width="40" height="40" fill="#000" />
-              <rect x="8" y="8" width="24" height="24" fill="#FFD700" />
-            </svg>
+          <header className="text-cente flex flex-col items-center">
+            <Image src={"/logo.png"} alt="logo" width={40} height={40} />
             <h1 className="mt-3 text-base font-bold tracking-wide text-yellow-400 uppercase">
               Create Account
             </h1>
