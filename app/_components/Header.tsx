@@ -80,7 +80,7 @@ function Header() {
 
       {/* Navigation */}
       <NavigationMenu>
-        <NavigationMenuList>
+        <NavigationMenuList className="gap-8">
           {/* Courses Dropdown */}
           <NavigationMenuItem>
             <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
