@@ -15,7 +15,12 @@ function Hero() {
       <div className="absolute w-full flex flex-col items-center mt-24">
         <h2 className="font-bold text-7xl font-game">Start</h2>
 
-        <h2 className="font-bold text-8xl font-game">Coding Adventure</h2>
+        <h2
+          className="font-bold text-8xl font-game text-yellow-400"
+          style={{ textShadow: "2px 2px 0 #000,-2px -2px 0 #000" }}
+        >
+          Coding Adventure
+        </h2>
       </div>
     </div>
   );

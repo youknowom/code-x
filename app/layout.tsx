@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Geist,
-  Geist_Mono,
-  Pixelify_Sans,
-  Inter,
-  Jersey_10,
-} from "next/font/google";
+import { Geist, Geist_Mono, Pixelify_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "./Provider";
 
@@ -43,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${gameFont.variable} ${inter.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${gameFont.variable} ${inter.variable}`}
       >
         <Provider
           attribute="class"
