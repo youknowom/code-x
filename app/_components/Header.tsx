@@ -85,7 +85,7 @@ function Header() {
           <NavigationMenuItem>
             <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid grid-cols-2 sm:w-[400px]">
+              <ul className="grid md:grid-cols-2 sm:w-[400px] md:w-[500px] lg:w-[600px]">
                 {courses.map((course) => (
                   <li key={course.id}>
                     <Link

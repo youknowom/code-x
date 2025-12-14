@@ -122,3 +122,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Normal smooth rotation (balanced speed) */
+@keyframes spinNormal {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-normal {
+  animation: spinNormal 10.5s linear infinite;
+}
