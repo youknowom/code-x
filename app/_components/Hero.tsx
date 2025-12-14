@@ -16,7 +16,7 @@ function Hero() {
         <h2 className="font-bold text-7xl font-game">Start</h2>
 
         <h2
-          className="font-bold text-8xl font-game text-yellow-400"
+          className=" font-game text-[48px] leading-[1] font-bold text-8xl font-game text-yellow-400"
           style={{ textShadow: "2px 2px 0 #000,-2px -2px 0 #000" }}
         >
           Coding Adventure

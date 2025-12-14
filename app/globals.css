@@ -128,7 +128,7 @@
   letter-spacing: 0.12em;
   -webkit-font-smoothing: none;
   font-smooth: never;
-  text-rendering: geometricPrecision;
+  text-rendering: optimizeSpeed;
 }
 
 @keyframes spinNormal {
