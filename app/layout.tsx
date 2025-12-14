@@ -2,14 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Pixelify_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "./Provider";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
