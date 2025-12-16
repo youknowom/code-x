@@ -1,7 +1,7 @@
 import { db } from "@/config/db";
 import { usersTable } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export { NextRequest } from "next/server";
 
@@ -17,12 +17,17 @@ export async function POST(req: NextRequest) {
     .where(eq(usersTable.email, user?.primaryEmailAddress?.emailAddress));
   //if not then create user record
   if (users?.length <= 0) {
-    const data = {
+    const newUser = {
       name: user?.fullName ?? "",
       email: user?.primaryEmailAddress?.emailAddress ?? "",
+      points: 0,
     };
 
-    const result = await db.insert(usersTable).values(data);
+    const result = await db.insert(usersTable).values(newUser).returning();
+
+    return NextResponse.json(result[0]);
   }
+
+  return NextResponse.json(users[0]);
   //return user info
 }
