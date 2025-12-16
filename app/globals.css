@@ -122,3 +122,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+.font-game {
+  font-family: var(--font-game), monospace;
+  letter-spacing: 0.12em;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+
+@keyframes spinNormal {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-normal {
+  animation: spinNormal 10.5s linear infinite;
+}
