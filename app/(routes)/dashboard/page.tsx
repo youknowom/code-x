@@ -1,5 +1,6 @@
 import React from "react";
 import WelcomeBanner from "./_components/WelcomeBanner";
+import EnrolledCourses from "./_components/EnrolledCourses";
 
 function page() {
   return (
@@ -7,6 +8,7 @@ function page() {
       <div className="grid grid-cols-3 gap-7">
         <div className="col-span-2">
           <WelcomeBanner />
+          <EnrolledCourses />
         </div>
         <div>right</div>
       </div>

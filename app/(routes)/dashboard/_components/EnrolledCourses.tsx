@@ -1,7 +1,15 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 function EnrolledCourses() {
-  return <div>EnrolledCourses</div>;
+  const [EnrolledCourses, setEnrolledCourses] = useState([]);
+
+  return (
+    <div>
+      {EnrolledCourses?.length == 0 ? <div>Empty</div> : <div>List</div>}
+    </div>
+  );
 }
 
 export default EnrolledCourses;
