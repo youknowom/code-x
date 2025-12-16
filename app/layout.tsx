@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   title: "Code Tree",
   description: "coding Sourses And Projects",
   icons: {
-    icon: [{ url: "/logo.png", type: "image/png" }],
+    icon: "/icon.png",
   },
 };
 
