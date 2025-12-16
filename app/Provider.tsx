@@ -32,9 +32,8 @@ function Provider({
 
         <div className="flex flex-col items-center">
           <Header />
+          {children}
         </div>
-
-        {children}
       </UserDetailContext.Provider>
     </NextThemesProvider>
   );
