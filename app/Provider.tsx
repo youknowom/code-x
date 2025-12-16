@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
+import { UserDetailContext } from "@/context/UserDetailContext";
 
 function Provider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
   const { user } = useUser();
+  const [userDetail, setUserDetail] = useState<any>(null);
 
   useEffect(() => {
     if (user) {
@@ -18,11 +20,17 @@ function Provider({
   }, [user]);
 
   const createNewUser = async () => {
-    const result = await axios.post("/api/user", {});
-    console.log(result);
+    const res = await axios.post("/api/user", {});
+    setUserDetail(res.data);
   };
 
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+  return (
+    <NextThemesProvider {...props}>
+      <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
+        {children}
+      </UserDetailContext.Provider>
+    </NextThemesProvider>
+  );
 }
 
 export default Provider;
