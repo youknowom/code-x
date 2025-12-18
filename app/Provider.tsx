@@ -7,12 +7,20 @@ import axios from "axios";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import Header from "./_components/Header";
 
+type UserDetail = {
+  id: number;
+  name: string;
+  email: string;
+  points: number;
+  subscription?: string | null;
+};
+
 function Provider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
   const { user } = useUser();
-  const [userDetail, setUserDetail] = useState<any>(null);
+  const [userDetail, setUserDetail] = useState<UserDetail | null>(null);
 
   useEffect(() => {
     if (user) {
