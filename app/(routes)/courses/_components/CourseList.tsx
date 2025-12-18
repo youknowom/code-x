@@ -132,7 +132,7 @@ function CourseList() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
       {courseList.map((course) => (
         <div
           key={course.id}
@@ -140,7 +140,7 @@ function CourseList() {
             border rounded-xl overflow-hidden
             bg-zinc-900
             hover:scale-[1.02]
-            transition
+            transition cursor-pointer
           "
         >
           {/* Image */}
