@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import { Course } from "../../courses/_components/CourseList";
 
 function EnrolledCourses() {
-  const [enrolledCourses, setEnrolledCourses] = useState<any[]>([]);
+  const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
 
   return (
     <div className="mt-8">
