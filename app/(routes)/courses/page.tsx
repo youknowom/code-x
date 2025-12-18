@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import CourseList from "./_components/CourseList";
 
 export default function Page() {
   return (
@@ -26,6 +27,10 @@ export default function Page() {
             career.
           </p>
         </div>
+      </div>
+
+      <div className="mt- px-10 md:px-24 lg:px-36">
+        <h2 className="font-game text-4xl">All Courses</h2> <CourseList />
       </div>
     </div>
   );
