@@ -11,8 +11,8 @@ function InviteFriend() {
         Having Fun? Share the love with a friend ! Enter an amil and we will
         send them a personal invite
       </p>
-      <div>
-        <Input placeholder="Enter Invite Email" />
+      <div className="flex gap-2 items-center mt-5">
+        <Input placeholder="Enter Invite Email" className="min-w-sm" />
         <Button variant={"pixel"} className="font-game">
           Invite
         </Button>
