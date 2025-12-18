@@ -2,6 +2,7 @@ import React from "react";
 import WelcomeBanner from "./_components/WelcomeBanner";
 import EnrolledCourses from "./_components/EnrolledCourses";
 import ExploreMore from "./_components/ExploreMore";
+import InviteFriend from "./_components/InviteFriend";
 
 function page() {
   return (
@@ -10,7 +11,7 @@ function page() {
         <div className="col-span-2">
           <WelcomeBanner />
           <EnrolledCourses />
-          <ExploreMore />
+          <ExploreMore /> <InviteFriend />
         </div>
         <div>right</div>
       </div>

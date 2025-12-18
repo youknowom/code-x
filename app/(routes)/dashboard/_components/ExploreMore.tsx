@@ -44,8 +44,8 @@ function ExploreMore() {
             <Image
               src={option.icon}
               alt={option.title}
-              width={64}
-              height={64}
+              width={80}
+              height={80}
               className="mb-4"
             />
 
