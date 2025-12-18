@@ -1,4 +1,6 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 function UpgradeToPro() {
@@ -12,6 +14,11 @@ function UpgradeToPro() {
       <p className="font-game text-gray-500 text-x text-center">
         Join Pro Membership and get all course accesee
       </p>
+      <Link href={"/pricing"}>
+        <Button className="font-game" variant={"pixel"} size={"lg"}>
+          Upgrade
+        </Button>
+      </Link>
     </div>
   );
 }
