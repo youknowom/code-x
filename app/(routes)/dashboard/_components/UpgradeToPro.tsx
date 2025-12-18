@@ -6,17 +6,51 @@ import React from "react";
 function UpgradeToPro() {
   return (
     <div
-      className="flex items-center flex-col p-5 border-4
-     rounded-2xl"
+      className="
+        w-full max-w-sm
+        flex flex-col items-center gap-4
+        p-6 sm:p-8
+        border-4 border-zinc-700
+        rounded-2xl
+        bg-zinc-900
+        text-center
+        transition-all duration-300
+        hover:scale-[1.02]
+        hover:border-yellow-400
+      "
     >
-      <Image src={"/logo.png"} alt="logo" width={70} height={70} />
-      <h2 className="text-3xl font-game">Upgrade to pro</h2>{" "}
-      <p className="font-game text-gray-500 text-x text-center">
-        Join Pro Membership and get all course accesee
+      {/* Logo */}
+      <Image
+        src="/logo.png"
+        alt="CodeTree Pro Logo"
+        width={70}
+        height={70}
+        className="select-none"
+      />
+
+      {/* Title */}
+      <h2 className="text-2xl sm:text-3xl font-game text-white">
+        Upgrade to Pro
+      </h2>
+
+      {/* Description */}
+      <p className="font-game text-sm sm:text-base text-gray-400 leading-relaxed">
+        Join the Pro Membership and unlock
+        <span className="text-white"> all courses</span>, exclusive content, and
+        future updates.
       </p>
-      <Link href={"/pricing"}>
-        <Button className="font-game" variant={"pixel"} size={"lg"}>
-          Upgrade
+
+      {/* CTA */}
+      <Link href="/pricing" className="w-full">
+        <Button
+          variant="pixel"
+          size="lg"
+          className="
+            w-full font-game
+            text-base sm:text-lg
+          "
+        >
+          Upgrade Now 🚀
         </Button>
       </Link>
     </div>
