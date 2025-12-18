@@ -17,7 +17,7 @@ export default function Page() {
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 md:px-24 lg:px-36 bg-gradient-to-r from-black/80 to-transparent">
+        <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 md:px-24 lg:px-36 bg-linear-to-r from-black/80 to-transparent">
           <h2 className="font-game text-3xl sm:text-4xl md:text-6xl text-white">
             Explore All Courses
           </h2>
@@ -29,8 +29,10 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="mt- px-10 md:px-24 lg:px-36">
-        <h2 className="font-game text-4xl">All Courses</h2> <CourseList />
+      {/* Course List */}
+      <div className="mt-10 px-6 sm:px-10 md:px-24 lg:px-36">
+        <h2 className="font-game text-4xl mb-6">All Courses</h2>
+        <CourseList />
       </div>
     </div>
   );
