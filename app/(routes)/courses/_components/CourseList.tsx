@@ -1,85 +1,8 @@
-// "use client";
-
-// import axios from "axios";
-// import Image from "next/image";
-// import React, { useEffect, useState } from "react";
-
-// type Course = {
-//   id: number;
-//   courseId: number;
-//   title: string;
-//   description: string;
-//   bannerImage: string;
-//   tags?: string;
-// };
-
-// function CourseList() {
-//   const [courseList, setCourseList] = useState<Course[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     getAllCourses();
-//   }, []);
-
-//   const getAllCourses = async () => {
-//     try {
-//       setLoading(true);
-//       const res = await axios.get("/api/course");
-//       setCourseList(res.data);
-//     } catch (error) {
-//       console.error("Failed to fetch courses", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//         {[1, 2, 3].map((i) => (
-//           <div
-//             key={i}
-//             className="h-[220px] bg-zinc-800 animate-pulse rounded-xl"
-//           />
-//         ))}
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-//       {courseList.map((course) => (
-//         <div
-//           key={course.id}
-//           className="border rounded-xl overflow-hidden bg-zinc-900 hover:scale-[1.02] transition"
-//         >
-//           <Image
-//             src={course.bannerImage}
-//             alt={course.title}
-//             width={400}
-//             height={220}
-//             className="w-full h-[220px] object-cover"
-//           />
-
-//           <div className="p-4">
-//             <h2 className="font-game text-xl mb-2">{course.title}</h2>
-
-//             <p className="text-gray-400 text-sm line-clamp-2">
-//               {course.description}
-//             </p>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// export default CourseList;
-
 "use client";
 
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type Course = {
@@ -132,16 +55,18 @@ function CourseList() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {courseList.map((course) => (
-        <div
+        <Link
           key={course.id}
+          href={`/courses/${course.id}`}
           className="
-            border rounded-xl overflow-hidden
-            bg-zinc-900
-            hover:scale-[1.02]
-            transition cursor-pointer
-          "
+          border rounded-xl overflow-hidden
+          bg-zinc-900
+          hover:scale-[1.02]
+          transition cursor-pointer
+          block
+        "
         >
           {/* Image */}
           <div className="relative">
@@ -157,14 +82,14 @@ function CourseList() {
             {course.level && (
               <span
                 className={`
-                  absolute top-3 left-3
-                  px-3 py-1
-                  text-xs font-semibold
-                  rounded-full
-                  text-white
-                  shadow-md
-                  ${levelColorMap[course.level]}
-                `}
+                absolute top-3 left-3
+                px-3 py-1
+                text-xs font-semibold
+                rounded-full
+                text-white
+                shadow-md
+                ${levelColorMap[course.level]}
+              `}
               >
                 {course.level}
               </span>
@@ -179,7 +104,7 @@ function CourseList() {
               {course.description}
             </p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
