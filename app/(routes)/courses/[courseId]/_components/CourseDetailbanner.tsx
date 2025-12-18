@@ -1,6 +1,10 @@
 import React from "react";
-
-function CourseDetailbanner() {
+import { Course } from "../../_components/CourseList";
+type Props = {
+  loading: boolean;
+  courseDetail: Course | undefined;
+};
+function CourseDetailbanner({ loading, courseDetail }: Props) {
   return <div>CourseDetailbanner</div>;
 }
 
