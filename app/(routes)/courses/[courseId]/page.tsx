@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CourseDetailbanner from "./_components/CourseDetailbanner";
 import { Course } from "../_components/CourseList";
+import CourseChappter from "./_components/CourseChappter";
 
 function CourseDetail() {
   const params = useParams();
@@ -36,6 +37,12 @@ function CourseDetail() {
   return (
     <div>
       <CourseDetailbanner loading={loading} courseDetail={courseDetail} />
+      <div className="grid grid-cols-4 p-10 md:px-24 lg:px-36">
+        <div className="col-span-3">
+          <CourseChappter loading={loading} courseDetail={courseDetail} />
+        </div>
+      </div>
+      <div>Second</div>
     </div>
   );
 }

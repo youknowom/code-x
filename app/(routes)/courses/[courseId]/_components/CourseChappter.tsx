@@ -1,6 +1,12 @@
 import React from "react";
+import { Course } from "../../_components/CourseList";
 
-function CourseChappter() {
+type Props = {
+  loading: boolean;
+  courseDetail: Course | undefined;
+};
+
+function CourseChappter({ loading, courseDetail }: Props) {
   return <div>CourseChappter</div>;
 }
 
