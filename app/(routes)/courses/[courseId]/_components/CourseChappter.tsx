@@ -27,20 +27,28 @@ function CourseChapter({ loading, courseDetail }: Props) {
 
   // No chapters
   if (!courseDetail?.chapters?.length) {
-    return <p className="text-muted-foreground">No chapters available</p>;
+    return (
+      <div className="p-5 border-4 rounded-2xl">
+        <p className="text-muted-foreground">No chapters available</p>
+      </div>
+    );
   }
 
   return (
-    <Accordion type="single" collapsible>
-      {courseDetail.chapters.map((chapter, index) => (
-        <AccordionItem key={index} value={`chapter-${index}`}>
-          <AccordionTrigger>{chapter?.name}</AccordionTrigger>
-          <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
-          </AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
+    <div className="p-5 border-4 rounded-2xl">
+      <Accordion type="single" collapsible>
+        {courseDetail.chapters.map((chapter, index) => (
+          <AccordionItem key={index} value={`chapter-${index}`}>
+            <AccordionTrigger className="p-3 hover:bg-zinc-800 text-3xl">
+              {chapter?.name}
+            </AccordionTrigger>
+            <AccordionContent>
+              Yes. It adheres to the WAI-ARIA design pattern.
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </div>
   );
 }
 

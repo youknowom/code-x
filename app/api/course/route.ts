@@ -29,7 +29,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const courseId = searchParams.get("courseid");
+  const courseId = searchParams.get("courseId");
 
   if (courseId) {
     const result = await db
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
   } else {
     //fetch all courses
 
-    const result = await db.select().from(coursesTable).orderBy;
+    const result = await db.select().from(coursesTable);
 
     return NextResponse.json(result);
   }
