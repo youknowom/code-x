@@ -13,8 +13,23 @@ export type Course = {
   bannerImage: string;
   level?: "Beginner" | "Intermediate" | "Advanced";
   tags?: string;
+  chapters?: chapter[];
+};
+type chapter = {
+  chapterId: number;
+  courseId: number;
+  description: string;
+  name: string;
+  id: number;
+  exercises: exercises[];
 };
 
+type exercises = {
+  name: string;
+  slug: string;
+  xp: number;
+  difficulty: string;
+};
 const levelColorMap: Record<NonNullable<Course["level"]>, string> = {
   Beginner: "bg-green-600",
   Intermediate: "bg-yellow-500 text-black",
