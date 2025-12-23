@@ -45,7 +45,7 @@ function CourseDetail() {
 
         {/* RIGHT */}
         <div className="lg:sticky lg:top-24 h-fit space-y-6">
-          <CourseStatus />
+          <CourseStatus courseDetail={courseDetail} />
           <UpgradeToPro />
           <CommunityHelpSection />
         </div>
