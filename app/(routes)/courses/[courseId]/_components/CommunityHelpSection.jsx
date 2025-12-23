@@ -10,7 +10,9 @@ function CommunityHelpSection() {
         Ask your questions and get help from the community.
       </p>
 
-      <Button className="text-lg px-6 py-5 rounded-xl">Go to Community</Button>
+      <Button variant={"pixel"} className="text-lg px-6 py-5 rounded-xl">
+        Go to Community
+      </Button>
     </div>
   );
 }
