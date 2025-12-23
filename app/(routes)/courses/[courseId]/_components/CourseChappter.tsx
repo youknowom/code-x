@@ -123,10 +123,13 @@ function CourseChapter({ loading, courseDetail }: Props) {
             <AccordionContent className="px-6 py-4 text-gray-400 bg-zinc-950">
               <div>
                 {chapter?.exercises.map((exc, index) => (
-                  <div key={index}>
-                    <div>
-                      <h2>Excercise {index + 1}</h2>
-                      <h2>{exc.name}</h2>
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-10 font-game">
+                      <h2 className="text-3xl">Excercise {index + 1}</h2>
+                      <h2 className="text-3xl">{exc.name}</h2>
                     </div>
                     <Button variant={"pixel"}>{exc?.xp}xp</Button>
                   </div>
