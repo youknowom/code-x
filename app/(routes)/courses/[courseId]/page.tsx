@@ -6,29 +6,26 @@ import axios from "axios";
 import CourseDetailbanner from "./_components/CourseDetailbanner";
 import { Course } from "../_components/CourseList";
 import CourseChappter from "./_components/CourseChappter";
+import CourseStatus from "./_components/CourseStatus";
 
 function CourseDetail() {
   const params = useParams();
   const courseId = params?.courseId as string;
 
-  const [courseDetail, setCourseDetail] = useState<Course | undefined>(
-    undefined
-  );
+  const [courseDetail, setCourseDetail] = useState<Course | undefined>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (courseId) {
-      getCourseDetail();
-    }
+    if (courseId) getCourseDetail();
   }, [courseId]);
 
   const getCourseDetail = async () => {
     try {
       setLoading(true);
-      const result = await axios.get(`/api/course?courseId=${courseId}`);
-      setCourseDetail(result.data);
+      const res = await axios.get(`/api/course?courseId=${courseId}`);
+      setCourseDetail(res.data);
     } catch (error) {
-      console.error("Failed to fetch course detail", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -37,12 +34,19 @@ function CourseDetail() {
   return (
     <div>
       <CourseDetailbanner loading={loading} courseDetail={courseDetail} />
-      <div className="grid grid-cols-4 p-10 md:px-24 lg:px-36 gap-7">
-        <div className="col-span-3">
+
+      {/* MAIN CONTENT */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 md:px-24 lg:px-36 py-10">
+        {/* LEFT: Chapters */}
+        <div className="lg:col-span-2">
           <CourseChappter loading={loading} courseDetail={courseDetail} />
         </div>
+
+        {/* RIGHT: Progress */}
+        <div className="lg:sticky lg:top-24 h-fit">
+          <CourseStatus />
+        </div>
       </div>
-      <div>Second</div>
     </div>
   );
 }
