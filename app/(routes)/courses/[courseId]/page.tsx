@@ -7,6 +7,8 @@ import CourseDetailbanner from "./_components/CourseDetailbanner";
 import { Course } from "../_components/CourseList";
 import CourseChappter from "./_components/CourseChappter";
 import CourseStatus from "./_components/CourseStatus";
+import UpgradeToPro from "../../dashboard/_components/UpgradeToPro";
+import CommunityHelpSection from "./_components/CommunityHelpSection";
 
 function CourseDetail() {
   const params = useParams();
@@ -35,16 +37,17 @@ function CourseDetail() {
     <div>
       <CourseDetailbanner loading={loading} courseDetail={courseDetail} />
 
-      {/* MAIN CONTENT */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 md:px-24 lg:px-36 py-10">
-        {/* LEFT: Chapters */}
+        {/* LEFT */}
         <div className="lg:col-span-2">
           <CourseChappter loading={loading} courseDetail={courseDetail} />
         </div>
 
-        {/* RIGHT: Progress */}
-        <div className="lg:sticky lg:top-24 h-fit">
+        {/* RIGHT */}
+        <div className="lg:sticky lg:top-24 h-fit space-y-6">
           <CourseStatus />
+          <UpgradeToPro />
+          <CommunityHelpSection />
         </div>
       </div>
     </div>
