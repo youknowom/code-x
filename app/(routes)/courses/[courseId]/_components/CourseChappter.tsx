@@ -121,11 +121,11 @@ function CourseChapter({ loading, courseDetail }: Props) {
             </AccordionTrigger>
 
             <AccordionContent className="px-6 py-4 text-gray-400 bg-zinc-950">
-              <div>
+              <div className="p-7 bg-zinc-900 rounded-2xl">
                 {chapter?.exercises.map((exc, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-between mb-7"
                   >
                     <div className="flex items-center gap-10 font-game">
                       <h2 className="text-3xl">Excercise {index + 1}</h2>
