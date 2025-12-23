@@ -1,65 +1,3 @@
-// import React from "react";
-// import { Course } from "../../_components/CourseList";
-// import {
-//   Accordion,
-//   AccordionContent,
-//   AccordionItem,
-//   AccordionTrigger,
-// } from "@/components/ui/accordion";
-// import { Skeleton } from "@/components/ui/skeleton";
-
-// type Props = {
-//   loading: boolean;
-//   courseDetail: Course | undefined;
-// };
-
-// function CourseChapter({ loading, courseDetail }: Props) {
-//   // Loading state
-//   if (loading) {
-//     return (
-//       <div className="space-y-4">
-//         <Skeleton className="w-full h-[100px] rounded-2xl" />
-//         <Skeleton className="w-full h-[100px] rounded-2xl" />
-//         <Skeleton className="w-full h-[100px] rounded-2xl" />
-//       </div>
-//     );
-//   }
-
-//   // No chapters
-//   if (!courseDetail?.chapters?.length) {
-//     return (
-//       <div className="p-5 border-4 rounded-2xl">
-//         <p className="text-muted-foreground">No chapters available</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="p-5 border-4 rounded-2xl">
-//       <Accordion type="single" collapsible>
-//         {courseDetail.chapters.map((chapter, index) => (
-//           <AccordionItem key={index} value={`chapter-${index}`}>
-//             <AccordionTrigger className="p-3 hover:bg-zinc-800 text-3xl">
-//               {" "}
-//               <div>
-//                 <h2 className="h-12 p-2  w-10 rounded-full bg-zinc-700">
-//                   {index + 1}
-//                 </h2>
-//               </div>
-//               {chapter?.name}
-//             </AccordionTrigger>
-//             <AccordionContent>
-//               Yes. It adheres to the WAI-ARIA design pattern.
-//             </AccordionContent>
-//           </AccordionItem>
-//         ))}
-//       </Accordion>
-//     </div>
-//   );
-// }
-
-// export default CourseChapter;
-
 import React from "react";
 import { Course } from "../../_components/CourseList";
 import {
@@ -70,7 +8,11 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 type Props = {
   loading: boolean;
   courseDetail: Course | undefined;
@@ -131,7 +73,15 @@ function CourseChapter({ loading, courseDetail }: Props) {
                       <h2 className="text-3xl">Excercise {index + 1}</h2>
                       <h2 className="text-3xl">{exc.name}</h2>
                     </div>
-                    <Button variant={"pixel"}>{exc?.xp}xp</Button>
+                    {/* <Button variant={"pixel"}>{exc?.xp}xp</Button> */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="pixelDisabled">???</Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="font-game text-lg">please Enroll First</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 ))}
               </div>
