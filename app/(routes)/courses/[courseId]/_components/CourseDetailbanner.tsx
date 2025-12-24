@@ -23,7 +23,7 @@ function CourseDetailbanner({ loading, courseDetail }: Props) {
     courseDetail.bannerImage && courseDetail.bannerImage.trim() !== ""
       ? courseDetail.bannerImage
       : "/cookie.png";
-
+  const EnrolledCourse = () => {};
   return (
     <div className="relative">
       <Image
@@ -42,7 +42,12 @@ function CourseDetailbanner({ loading, courseDetail }: Props) {
           {courseDetail.description}
         </p>
 
-        <Button variant="pixel" className="font-game text-2xl mt-7" size="lg">
+        <Button
+          variant="pixel"
+          className="font-game text-2xl mt-7"
+          size="lg"
+          onClick={EnrolledCourse}
+        >
           Enroll Now
         </Button>
       </div>
