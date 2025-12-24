@@ -4,28 +4,28 @@ import React, { useEffect, useState } from "react";
 import { Course } from "../../_components/CourseList";
 
 type Props = {
-  CourseDetail: Course | undefined;
+  courseDetail: Course | undefined;
 };
 
-function CourseStatus({ CourseDetail }: Props) {
+function CourseStatus({ courseDetail }: Props) {
   const [counts, setCounts] = useState({
     totalExce: 0,
     totalXp: 0,
   });
 
   useEffect(() => {
-    if (CourseDetail) getCounts();
-  }, [CourseDetail]);
+    if (courseDetail) getCounts();
+  }, [courseDetail]);
 
   const getCounts = () => {
     let totalExercises = 0;
     let totalXp = 0;
 
-    CourseDetail?.chapters?.forEach((chapter) => {
+    courseDetail?.chapters?.forEach((chapter: any) => {
       const exercises = chapter?.exercises || [];
       totalExercises += exercises.length;
 
-      exercises.forEach((exc) => {
+      exercises.forEach((exc: any) => {
         totalXp += exc?.xp || 0;
       });
     });
