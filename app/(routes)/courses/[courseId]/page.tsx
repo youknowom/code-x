@@ -38,18 +38,22 @@ function CourseDetail() {
       <CourseDetailbanner
         loading={loading}
         courseDetail={courseDetail}
-        refreshData={() => setCourseDetail}
+        refreshData={getCourseDetail}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 md:px-24 lg:px-36 py-10">
         {/* LEFT */}
         <div className="lg:col-span-2">
-          <CourseChappter loading={loading} courseDetail={courseDetail} />
+          <CourseChappter
+            loading={loading}
+            courseDetail={courseDetail}
+            refreshData={getCourseDetail}
+          />
         </div>
 
         {/* RIGHT */}
         <div className="lg:sticky lg:top-24 h-fit space-y-6">
-          <CourseStatus courseDetail={courseDetail} />
+          <CourseStatus courseDetail={courseDetail} loading={loading} />
           <UpgradeToPro />
           <CommunityHelpSection />
         </div>

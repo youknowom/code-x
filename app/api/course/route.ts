@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
 
     let isEnrolledCourse = false;
     let enrollCourse: any[] = [];
+    let completedExcercises: any[] = [];
 
     if (user?.primaryEmailAddress?.emailAddress) {
       const dbUser = await db
@@ -46,27 +47,23 @@ export async function GET(req: NextRequest) {
             )
           );
         isEnrolledCourse = enrollCourse?.length > 0 ? true : false;
+
+        // Fetch completed exercises using numeric IDs
+        completedExcercises = await db
+          .select()
+          .from(completedExercisesTable)
+          .where(
+            and(
+              eq(completedExercisesTable.courseId, parsedCourseId),
+              eq(completedExercisesTable.userId, dbUser[0].id)
+            )
+          )
+          .orderBy(
+            desc(completedExercisesTable.courseId),
+            desc(completedExercisesTable.exerciseId)
+          );
       }
     }
-    const completedExcercises = await db
-      .select()
-      .from(completedExercisesTable)
-
-      .where(
-        and(
-          //@ts-ignore
-          eq(completedExercisesTable.courseId, courseId),
-          //@ts-ignore
-          eq(
-            completedExercisesTable.userId,
-            user?.primaryEmailAddress?.emailAddress
-          )
-        )
-      )
-      .orderBy(
-        desc(completedExercisesTable?.courseId),
-        desc(completedExercisesTable?.exerciseId)
-      );
     return NextResponse.json({
       ...result[0],
       chapters: chapterResult,

@@ -5,9 +5,10 @@ import { Course } from "../../_components/CourseList";
 
 type Props = {
   courseDetail: Course | undefined;
+  loading: boolean;
 };
 
-function CourseStatus({ courseDetail }: Props) {
+function CourseStatus({ courseDetail, loading }: Props) {
   const [counts, setCounts] = useState({
     totalExce: 0,
     totalXp: 0,
@@ -53,10 +54,15 @@ function CourseStatus({ courseDetail }: Props) {
           <div className="flex justify-between text-lg mb-1">
             <span>Exercises</span>
             <span className="text-muted-foreground">
-              1 / {counts.totalExce}
+              {courseDetail?.completedExcercises?.length} / {counts.totalExce}
             </span>
           </div>
-          <Progress value={0} />
+          <Progress
+            value={UpdateProgress(
+              courseDetail?.completedExcercises?.length ?? 0,
+              counts?.totalExce
+            )}
+          />
         </div>
       </div>
 
