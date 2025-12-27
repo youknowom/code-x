@@ -29,7 +29,7 @@ function CourseDetailbanner({ loading, courseDetail, refreshData }: Props) {
       courseId: courseDetail?.courseId,
     });
     toast.success("course enrolled!");
-    refreshData(true);
+    refreshData();
     setLoading_(false);
   };
   // ✅ Use cookie.png as fallback
