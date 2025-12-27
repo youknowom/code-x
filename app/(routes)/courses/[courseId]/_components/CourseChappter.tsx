@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { fireConfetti } from "@/components/ConfettiBlast";
 
 type Props = {
   loading: boolean;
@@ -37,13 +38,20 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
     setCompletingExercise(key);
 
     try {
-      await axios.post("/api/complete-exercise", {
+      const res = await axios.post("/api/complete-exercise", {
         courseId: courseDetail?.courseId,
         chapterId,
         exerciseId,
         xpEarned: xp,
       });
-      toast.success(`Exercise completed! +${xp}xp earned!`);
+      const alreadyCompleted = res.data?.alreadyCompleted;
+
+      // Only celebrate on first-time completion
+      if (!alreadyCompleted) {
+        fireConfetti();
+        toast.success(`Exercise completed! +${xp}xp earned!`);
+      }
+
       refreshData();
     } catch (error) {
       console.error(error);
