@@ -15,6 +15,18 @@ export type Course = {
   tags?: string;
   chapters?: chapter[];
   userEnrolled?: boolean;
+  courseEnrolledInfo?: courseEnrolledInfo;
+  completedExcercises: completedExcercises[];
+};
+
+type completedExcercises = {
+  chapterId: number;
+  courseId: number;
+  exerciseId: number;
+};
+type courseEnrolledInfo = {
+  xpEarned: number;
+  enrolledDate: any;
 };
 type chapter = {
   chapterId: number;

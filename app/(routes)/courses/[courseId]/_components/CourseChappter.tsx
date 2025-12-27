@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Course } from "../../_components/CourseList";
 import {
   Accordion,
@@ -13,12 +13,71 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import axios from "axios";
+import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
+
 type Props = {
   loading: boolean;
   courseDetail: Course | undefined;
+  refreshData: () => void;
 };
 
-function CourseChapter({ loading, courseDetail }: Props) {
+function CourseChapter({ loading, courseDetail, refreshData }: Props) {
+  const [completingExercise, setCompletingExercise] = useState<string | null>(
+    null
+  );
+
+  const handleCompleteExercise = async (
+    chapterId: number,
+    exerciseId: number,
+    xp: number
+  ) => {
+    const key = `${chapterId}-${exerciseId}`;
+    setCompletingExercise(key);
+
+    try {
+      await axios.post("/api/complete-exercise", {
+        courseId: courseDetail?.courseId,
+        chapterId,
+        exerciseId,
+        xpEarned: xp,
+      });
+      toast.success(`Exercise completed! +${xp}xp earned!`);
+      refreshData();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to complete exercise");
+    } finally {
+      setCompletingExercise(null);
+    }
+  };
+
+  const EnableExercise = (
+    chapterIndex: number,
+    exerciseIndex: number,
+    chapterExercisesLength: number
+  ) => {
+    const completed = courseDetail?.completedExcercises;
+
+    // If nothing is completed, enable FIRST exercise ONLY
+    if (!completed || completed.length === 0) {
+      return chapterIndex === 0 && exerciseIndex === 0;
+    }
+
+    // last completed
+    const last = completed[completed.length - 1];
+
+    // Convert to global exercise number
+    const currentExerciseNumber =
+      chapterIndex * chapterExercisesLength + exerciseIndex + 1;
+
+    const lastCompletedNumber =
+      (last.chapterId - 1) * chapterExercisesLength + last.exerciseId;
+
+    return currentExerciseNumber === lastCompletedNumber + 2;
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -40,6 +99,15 @@ function CourseChapter({ loading, courseDetail }: Props) {
       </div>
     );
   }
+
+  const isExerciseComplted = (chapterId: number, exceriseId: number) => {
+    const completeChapterse = courseDetail?.completedExcercises;
+
+    const foundExercise = completeChapterse?.find(
+      (item) => item.chapterId == chapterId && item.exerciseId == exceriseId
+    );
+    return foundExercise ? true : false;
+  };
 
   return (
     <div className="p-6 border-2 border-zinc-800 rounded-2xl bg-zinc-900">
@@ -64,24 +132,64 @@ function CourseChapter({ loading, courseDetail }: Props) {
 
             <AccordionContent className="px-6 py-4 text-gray-400 bg-zinc-950">
               <div className="p-7 bg-zinc-900 rounded-2xl">
-                {chapter?.exercises.map((exc, index) => (
+                {chapter?.exercises.map((exc, indexExc) => (
                   <div
-                    key={index}
+                    key={`${chapter.chapterId}-${indexExc}`}
                     className="flex items-center justify-between mb-7"
                   >
                     <div className="flex items-center gap-10 font-game">
-                      <h2 className="text-3xl">Excercise {index + 1}</h2>
+                      <h2 className="text-3xl">Excercise {indexExc + 1}</h2>
                       <h2 className="text-3xl">{exc.name}</h2>
                     </div>
-                    {/* <Button variant={"pixel"}>{exc?.xp}xp</Button> */}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="pixelDisabled">???</Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="font-game text-lg">please Enroll First</p>
-                      </TooltipContent>
-                    </Tooltip>
+
+                    {isExerciseComplted(chapter?.chapterId, indexExc + 1) ? (
+                      <Button
+                        variant={"pixel"}
+                        className="bg-green-600"
+                        disabled
+                      >
+                        Completed
+                      </Button>
+                    ) : EnableExercise(
+                        index,
+                        indexExc,
+                        chapter?.exercises?.length
+                      ) ? (
+                      <Button
+                        variant={"pixel"}
+                        onClick={() =>
+                          handleCompleteExercise(
+                            chapter?.chapterId,
+                            indexExc + 1,
+                            exc?.xp
+                          )
+                        }
+                        disabled={
+                          completingExercise ===
+                          `${chapter?.chapterId}-${indexExc + 1}`
+                        }
+                      >
+                        {completingExercise ===
+                        `${chapter?.chapterId}-${indexExc + 1}` ? (
+                          <Loader2Icon className="animate-spin" />
+                        ) : (
+                          `${exc?.xp}xp`
+                        )}
+                      </Button>
+                    ) : (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="pixelDisabled">???</Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="font-game text-lg">
+                            {courseDetail?.userEnrolled
+                              ? "Complete previous exercises first"
+                              : "Please Enroll First"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
                   </div>
                 ))}
               </div>

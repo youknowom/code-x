@@ -5,9 +5,10 @@ import { Course } from "../../_components/CourseList";
 
 type Props = {
   courseDetail: Course | undefined;
+  loading: boolean;
 };
 
-function CourseStatus({ courseDetail }: Props) {
+function CourseStatus({ courseDetail, loading }: Props) {
   const [counts, setCounts] = useState({
     totalExce: 0,
     totalXp: 0,
@@ -35,7 +36,13 @@ function CourseStatus({ courseDetail }: Props) {
       totalXp: totalXp,
     });
   };
-
+  const UpdateProgress = (currentValue: number, totalValue: number) => {
+    if (currentValue && totalValue) {
+      const perc = (currentValue * 100) / totalValue;
+      return perc;
+    }
+    return 0;
+  };
   return (
     <div className="font-game p-5 border-4 rounded-2xl bg-black/40 backdrop-blur-sm w-full">
       <h2 className="text-2xl mb-4">Course Progress</h2>
@@ -47,10 +54,15 @@ function CourseStatus({ courseDetail }: Props) {
           <div className="flex justify-between text-lg mb-1">
             <span>Exercises</span>
             <span className="text-muted-foreground">
-              1 / {counts.totalExce}
+              {courseDetail?.completedExcercises?.length} / {counts.totalExce}
             </span>
           </div>
-          <Progress value={0} />
+          <Progress
+            value={UpdateProgress(
+              courseDetail?.completedExcercises?.length ?? 0,
+              counts?.totalExce
+            )}
+          />
         </div>
       </div>
 
@@ -61,10 +73,15 @@ function CourseStatus({ courseDetail }: Props) {
           <div className="flex justify-between text-lg mb-1">
             <span>XP Earned</span>
             <span className="text-muted-foreground">
-              1 /{counts.totalXp} XP
+              {courseDetail?.courseEnrolledInfo?.xpEarned}/{counts.totalXp} XP
             </span>
           </div>
-          <Progress value={0} />
+          <Progress
+            value={UpdateProgress(
+              courseDetail?.courseEnrolledInfo?.xpEarned ?? 0,
+              counts.totalXp
+            )}
+          />
         </div>
       </div>
     </div>
