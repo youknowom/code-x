@@ -35,7 +35,11 @@ function CourseDetail() {
 
   return (
     <div>
-      <CourseDetailbanner loading={loading} courseDetail={courseDetail} />
+      <CourseDetailbanner
+        loading={loading}
+        courseDetail={courseDetail}
+        refreshData={() => setCourseDetail}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 md:px-24 lg:px-36 py-10">
         {/* LEFT */}

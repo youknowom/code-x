@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Course } from "../../_components/CourseList";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { tr } from "date-fns/locale";
+import { Loader2Icon } from "lucide-react";
+import { toast } from "sonner";
 
 type Props = {
   loading: boolean;
   courseDetail: Course | undefined;
+  refreshData: () => void;
 };
 
-function CourseDetailbanner({ loading, courseDetail }: Props) {
+function CourseDetailbanner({ loading, courseDetail, refreshData }: Props) {
   if (loading) {
     return <Skeleton className="w-full h-[350px] rounded-2xl" />;
   }
@@ -17,13 +22,22 @@ function CourseDetailbanner({ loading, courseDetail }: Props) {
   if (!courseDetail) {
     return null;
   }
-
+  const [loading_, setLoading_] = useState(false);
+  const EnrolledCourse = async () => {
+    setLoading_(true);
+    const result = await axios.post("/api/enroll-course", {
+      courseId: courseDetail?.courseId,
+    });
+    toast.success("course enrolled!");
+    refreshData(true);
+    setLoading_(false);
+  };
   // ✅ Use cookie.png as fallback
   const imageSrc =
     courseDetail.bannerImage && courseDetail.bannerImage.trim() !== ""
       ? courseDetail.bannerImage
       : "/cookie.png";
-  const EnrolledCourse = () => {};
+
   return (
     <div className="relative">
       <Image
@@ -42,14 +56,22 @@ function CourseDetailbanner({ loading, courseDetail }: Props) {
           {courseDetail.description}
         </p>
 
-        <Button
-          variant="pixel"
-          className="font-game text-2xl mt-7"
-          size="lg"
-          onClick={EnrolledCourse}
-        >
-          Enroll Now
-        </Button>
+        {!courseDetail?.userEnrolled ? (
+          <Button
+            variant="pixel"
+            className="font-game text-2xl mt-7"
+            size="lg"
+            disabled={loading_}
+            onClick={EnrolledCourse}
+          >
+            {loading_ && <Loader2Icon className="animate-spin" />}
+            Enroll Now
+          </Button>
+        ) : (
+          <Button className="text-2xl mt-7" size={"lg"} variant={"pixel"}>
+            Continue Learning{" "}
+          </Button>
+        )}
       </div>
     </div>
   );

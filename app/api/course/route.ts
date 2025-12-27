@@ -5,8 +5,14 @@
 // import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/config/db";
-import { courseChaptersTable, coursesTable } from "@/config/schema";
-import { eq } from "drizzle-orm";
+import {
+  courseChaptersTable,
+  coursesTable,
+  enrolledCoursesTable,
+  usersTable,
+} from "@/config/schema";
+import { currentUser } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 // export async function GET(req: NextRequest) {
@@ -30,24 +36,49 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const courseId = searchParams.get("courseId");
+  const user = await currentUser();
 
   if (courseId) {
+    const parsedCourseId = parseInt(courseId, 10);
     const result = await db
       .select()
       .from(coursesTable)
-      //@ts-ignore
-      .where(eq(coursesTable.courseId, courseId));
+      .where(eq(coursesTable.courseId, parsedCourseId));
     const chapterResult = await db
       .select()
       .from(courseChaptersTable)
-      //@ts-ignore
-      .where(eq(courseChaptersTable.courseId, courseId));
-    return NextResponse.json({ ...result[0], chapters: chapterResult });
+      .where(eq(courseChaptersTable.courseId, parsedCourseId));
+
+    let isEnrolledCourse = false;
+
+    if (user?.primaryEmailAddress?.emailAddress) {
+      const dbUser = await db
+        .select()
+        .from(usersTable)
+        .where(eq(usersTable.email, user.primaryEmailAddress.emailAddress));
+
+      if (dbUser.length > 0) {
+        const enrollCourse = await db
+          .select()
+          .from(enrolledCoursesTable)
+          .where(
+            and(
+              eq(enrolledCoursesTable.courseId, parsedCourseId),
+              eq(enrolledCoursesTable.userId, dbUser[0].id)
+            )
+          );
+        isEnrolledCourse = enrollCourse?.length > 0 ? true : false;
+      }
+    }
+
+    return NextResponse.json({
+      ...result[0],
+      chapters: chapterResult,
+      userEnrolled: isEnrolledCourse,
+    });
   } else {
     //fetch all courses
-
     const result = await db.select().from(coursesTable);
-
     return NextResponse.json(result);
   }
 }

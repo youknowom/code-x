@@ -14,6 +14,7 @@ export type Course = {
   level?: "Beginner" | "Intermediate" | "Advanced";
   tags?: string;
   chapters?: chapter[];
+  userEnrolled?: boolean;
 };
 type chapter = {
   chapterId: number;
