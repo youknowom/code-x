@@ -58,9 +58,28 @@ export const enrolledCoursesTable = pgTable("enrolled_courses", {
   xpEarned: integer("xp_earned").default(0),
 });
 
-export const CompletedExerciseTable = pgTable("completedExcersise", {
-  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  courseId: integer(),
-  chapterId: integer(),
-  exceriseId: integer(),
-});
+export const completedExercisesTable = pgTable(
+  "completed_exercises",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    courseId: integer("course_id")
+      .notNull()
+      .references(() => coursesTable.courseId, { onDelete: "cascade" }),
+    chapterId: integer("chapter_id")
+      .notNull()
+      .references(() => courseChaptersTable.id, { onDelete: "cascade" }),
+    exerciseId: integer("exercise_id").notNull(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => usersTable.id, { onDelete: "cascade" }),
+    completedAt: timestamp("completed_at").defaultNow(),
+  },
+  (table) => ({
+    uniqueExercisePerUser: unique().on(
+      table.userId,
+      table.courseId,
+      table.chapterId,
+      table.exerciseId
+    ),
+  })
+);
