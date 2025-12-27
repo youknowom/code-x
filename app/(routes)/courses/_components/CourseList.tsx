@@ -16,7 +16,7 @@ export type Course = {
   chapters?: chapter[];
   userEnrolled?: boolean;
   courseEnrolledInfo?: courseEnrolledInfo;
-  completedExcercises: completedExcercises;
+  completedExcercises: completedExcercises[];
 };
 
 type completedExcercises = {
