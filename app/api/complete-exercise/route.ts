@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     );
 
   if (existingCompletion.length > 0) {
-    return NextResponse.json({ message: "Already completed" }, { status: 200 });
+    return NextResponse.json({ alreadyCompleted: true }, { status: 200 });
   }
 
   // Mark exercise as completed
