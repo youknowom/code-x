@@ -61,7 +61,7 @@ function CourseStatus({ courseDetail }: Props) {
           <div className="flex justify-between text-lg mb-1">
             <span>XP Earned</span>
             <span className="text-muted-foreground">
-              1 /{counts.totalXp} XP
+              {courseDetail?.courseEnrolledInfo?.xpEarned}/{counts.totalXp} XP
             </span>
           </div>
           <Progress value={0} />

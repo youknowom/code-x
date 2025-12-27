@@ -50,6 +50,7 @@ export async function GET(req: NextRequest) {
       .where(eq(courseChaptersTable.courseId, parsedCourseId));
 
     let isEnrolledCourse = false;
+    let enrollCourse: any[] = [];
 
     if (user?.primaryEmailAddress?.emailAddress) {
       const dbUser = await db
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest) {
         .where(eq(usersTable.email, user.primaryEmailAddress.emailAddress));
 
       if (dbUser.length > 0) {
-        const enrollCourse = await db
+        enrollCourse = await db
           .select()
           .from(enrolledCoursesTable)
           .where(
@@ -75,6 +76,7 @@ export async function GET(req: NextRequest) {
       ...result[0],
       chapters: chapterResult,
       userEnrolled: isEnrolledCourse,
+      courseEnrolledInfo: enrollCourse[0],
     });
   } else {
     //fetch all courses
