@@ -7,7 +7,7 @@ import {
   usersTable,
 } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -62,6 +62,10 @@ export async function GET(req: NextRequest) {
             user?.primaryEmailAddress?.emailAddress
           )
         )
+      )
+      .orderBy(
+        desc(completedExercisesTable?.courseId),
+        desc(completedExercisesTable?.exerciseId)
       );
     return NextResponse.json({
       ...result[0],
