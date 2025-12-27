@@ -1,5 +1,6 @@
 import { db } from "@/config/db";
 import {
+  completedExercisesTable,
   courseChaptersTable,
   coursesTable,
   enrolledCoursesTable,
@@ -47,12 +48,27 @@ export async function GET(req: NextRequest) {
         isEnrolledCourse = enrollCourse?.length > 0 ? true : false;
       }
     }
+    const completedExcercises = await db
+      .select()
+      .from(completedExercisesTable)
 
+      .where(
+        and(
+          //@ts-ignore
+          eq(completedExercisesTable.courseId, courseId),
+          //@ts-ignore
+          eq(
+            completedExercisesTable.userId,
+            user?.primaryEmailAddress?.emailAddress
+          )
+        )
+      );
     return NextResponse.json({
       ...result[0],
       chapters: chapterResult,
       userEnrolled: isEnrolledCourse,
       courseEnrolledInfo: enrollCourse[0],
+      completedExcercises: completedExcercises,
     });
   } else {
     //fetch all courses
