@@ -35,7 +35,13 @@ function CourseStatus({ courseDetail }: Props) {
       totalXp: totalXp,
     });
   };
-
+  const UpdateProgress = (currentValue: number, totalValue: number) => {
+    if (currentValue && totalValue) {
+      const perc = (currentValue * 100) / totalValue;
+      return perc;
+    }
+    return 0;
+  };
   return (
     <div className="font-game p-5 border-4 rounded-2xl bg-black/40 backdrop-blur-sm w-full">
       <h2 className="text-2xl mb-4">Course Progress</h2>
@@ -64,7 +70,12 @@ function CourseStatus({ courseDetail }: Props) {
               {courseDetail?.courseEnrolledInfo?.xpEarned}/{counts.totalXp} XP
             </span>
           </div>
-          <Progress value={0} />
+          <Progress
+            value={UpdateProgress(
+              courseDetail?.courseEnrolledInfo?.xpEarned ?? 0,
+              counts.totalXp
+            )}
+          />
         </div>
       </div>
     </div>
