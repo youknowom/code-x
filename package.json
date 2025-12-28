@@ -13,6 +13,7 @@
   "dependencies": {
     "@clerk/elements": "^0.23.89",
     "@clerk/nextjs": "^6.36.2",
+    "@codesandbox/sandpack-react": "^2.20.0",
     "@hookform/resolvers": "^5.2.2",
     "@lottiefiles/dotlottie-react": "^0.17.10",
     "@neondatabase/serverless": "^1.0.2",
