@@ -6,6 +6,7 @@ import "react-splitter-layout/lib/index.css";
 import axios from "axios";
 import { exercises } from "../../../_components/CourseList";
 import ContentSection from "../_components/ContentSection";
+import CodeEditor from "../_components/CodeEditor";
 
 export type CourseExercise = {
   chapterId: number;
@@ -70,7 +71,12 @@ function playground() {
             loading={loading}
           />
         </div>
-        <div>pane 2</div>
+        <div>
+          <CodeEditor
+            courseExerciseData={courseExerciseData}
+            loading={loading}
+          />
+        </div>
       </SplitterLayout>
     </div>
   );
