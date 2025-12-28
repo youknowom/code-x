@@ -26,8 +26,16 @@ export async function POST(req: NextRequest) {
       )
     );
 
+  const exercise = exerciseResult[0];
+
   return NextResponse.json({
     ...courseResult[0],
-    exerciseData: exerciseResult[0],
+    ExerciseData: {
+      chapterId: exercise?.chapterId,
+      courseId: exercise?.courseId,
+      exerciseId: exercise?.exerciseId,
+      exerciseName: exercise?.exerciseName,
+      exerciseContent: exercise?.exercisesContent,
+    },
   });
 }
