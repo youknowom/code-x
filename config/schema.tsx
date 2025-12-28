@@ -83,3 +83,14 @@ export const completedExercisesTable = pgTable(
     ),
   })
 );
+
+export const exercisesTable = pgTable("exercises", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  courseId: integer("course_id").references(() => coursesTable.courseId, {
+    onDelete: "cascade",
+  }),
+  chapterId: integer("chapter_id"),
+  exerciseId: varchar("exercise_id", { length: 255 }).notNull(),
+  exercisesContent: json("exercises_content"),
+  exerciseName: varchar("exercise_name", { length: 255 }),
+});

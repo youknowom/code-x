@@ -166,7 +166,12 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                       ) ? (
                       <Link
                         href={
-                          "/courses/" + courseDetail?.courseId + "/" + exc?.slug
+                          "/courses/" +
+                          courseDetail?.courseId +
+                          "/" +
+                          chapter?.chapterId +
+                          "/" +
+                          exc?.slug
                         }
                       >
                         <Button
