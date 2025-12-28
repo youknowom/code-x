@@ -17,6 +17,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { fireConfetti } from "@/components/ConfettiBlast";
+import Link from "next/link";
 
 type Props = {
   loading: boolean;
@@ -163,27 +164,33 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                         indexExc,
                         chapter?.exercises?.length
                       ) ? (
-                      <Button
-                        variant={"pixel"}
-                        onClick={() =>
-                          handleCompleteExercise(
-                            chapter?.chapterId,
-                            indexExc + 1,
-                            exc?.xp
-                          )
-                        }
-                        disabled={
-                          completingExercise ===
-                          `${chapter?.chapterId}-${indexExc + 1}`
+                      <Link
+                        href={
+                          "/courses/" + courseDetail?.courseId + "/" + exc?.slug
                         }
                       >
-                        {completingExercise ===
-                        `${chapter?.chapterId}-${indexExc + 1}` ? (
-                          <Loader2Icon className="animate-spin" />
-                        ) : (
-                          `${exc?.xp}xp`
-                        )}
-                      </Button>
+                        <Button
+                          variant={"pixel"}
+                          onClick={() =>
+                            handleCompleteExercise(
+                              chapter?.chapterId,
+                              indexExc + 1,
+                              exc?.xp
+                            )
+                          }
+                          disabled={
+                            completingExercise ===
+                            `${chapter?.chapterId}-${indexExc + 1}`
+                          }
+                        >
+                          {completingExercise ===
+                          `${chapter?.chapterId}-${indexExc + 1}` ? (
+                            <Loader2Icon className="animate-spin" />
+                          ) : (
+                            `${exc?.xp}xp`
+                          )}
+                        </Button>
+                      </Link>
                     ) : (
                       <Tooltip>
                         <TooltipTrigger asChild>
