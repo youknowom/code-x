@@ -12,6 +12,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { UserButton, useUser } from "@clerk/nextjs";
+import { useParams, usePathname } from "next/navigation";
 
 const courses = [
   {
@@ -72,6 +73,8 @@ const courses = [
 
 export default function Header() {
   const { user } = useUser();
+  const path = usePathname();
+  const { exerciseslug } = useParams();
 
   return (
     <div className="p-4 max-w-7xl mx-auto flex justify-between items-center w-full">
@@ -82,50 +85,56 @@ export default function Header() {
       </Link>
 
       {/* Navigation */}
-      <NavigationMenu>
-        <NavigationMenuList className="gap-8">
-          {/* Courses Dropdown */}
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid md:grid-cols-2 sm:w-[400px] md:w-[500px] lg:w-[600px] p-4 gap-2">
-                {courses.map((course) => (
-                  <li key={course.id}>
-                    <Link
-                      href={course.path}
-                      className="block rounded-md p-3 hover:bg-accent transition"
-                    >
-                      <h3 className="font-medium">{course.name}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {course.desc}
-                      </p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
+      {!exerciseslug ? (
+        <NavigationMenu>
+          <NavigationMenuList className="gap-8">
+            {/* Courses Dropdown */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid md:grid-cols-2 sm:w-[400px] md:w-[500px] lg:w-[600px] p-4 gap-2">
+                  {courses.map((course) => (
+                    <li key={course.id}>
+                      <Link
+                        href={course.path}
+                        className="block rounded-md p-3 hover:bg-accent transition"
+                      >
+                        <h3 className="font-medium">{course.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {course.desc}
+                        </p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
 
-          {/* Normal Links */}
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link href="/projects">Projects</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+            {/* Normal Links */}
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/projects">Projects</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link href="/pricing">Pricing</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/pricing">Pricing</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link href="/contact">Contact Us</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/contact">Contact Us</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      ) : (
+        <h2 className="text-2xl">
+          {exerciseslug?.toString()?.replaceAll("-", " ").toUpperCase()}
+        </h2>
+      )}
 
       {/* CTA */}
       {!user ? (
