@@ -67,6 +67,11 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
     exerciseIndex: number,
     chapterExercisesLength: number
   ) => {
+    // User must be enrolled to do exercises
+    if (!courseDetail?.userEnrolled) {
+      return false;
+    }
+
     const completed = courseDetail?.completedExcercises;
 
     // If nothing is completed, enable FIRST exercise ONLY
@@ -84,7 +89,7 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
     const lastCompletedNumber =
       (last.chapterId - 1) * chapterExercisesLength + last.exerciseId;
 
-    return currentExerciseNumber === lastCompletedNumber + 2;
+    return currentExerciseNumber === lastCompletedNumber + 1;
   };
 
   // Loading state
