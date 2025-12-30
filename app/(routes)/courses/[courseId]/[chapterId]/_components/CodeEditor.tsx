@@ -83,7 +83,8 @@ function CodeEditor({ courseExerciseData, loading }: Props) {
     <div className="relative h-full">
       <SandpackProvider
         theme={nightOwl}
-        template="static"
+        //@ts-ignore
+        template={courseExerciseData?.editorType}
         style={{ height: "100vh" }}
         files={
           courseExerciseData?.ExerciseData?.exerciseContent?.startCode || {}

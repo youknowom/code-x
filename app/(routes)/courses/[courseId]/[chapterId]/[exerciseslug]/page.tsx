@@ -22,6 +22,7 @@ export type CourseExercise = {
   exercises: exercises[];
   ExerciseData: ExerciseData;
   completedExercise: completedExcercises[];
+  editorType?: string;
 };
 type ExerciseData = {
   chapterId: number;
