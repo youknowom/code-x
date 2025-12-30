@@ -29,12 +29,12 @@ function UpgradeToPro() {
       />
 
       {/* Title */}
-      <h2 className="text-2xl sm:text-3xl font-game text-white">
+      <h2 className="text-2xl sm:text-3xl font-bold text-white">
         Upgrade to Pro
       </h2>
 
       {/* Description */}
-      <p className="font-game text-sm sm:text-base text-gray-400 leading-relaxed">
+      <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
         Join the Pro Membership and unlock
         <span className="text-white"> all courses</span>, exclusive content, and
         future updates.
@@ -46,7 +46,7 @@ function UpgradeToPro() {
           variant="pixel"
           size="lg"
           className="
-            w-full font-game
+            w-full font-semibold
             text-base sm:text-lg
           "
         >

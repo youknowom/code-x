@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Pixelify_Sans, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "./Provider";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -14,15 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const gameFont = Pixelify_Sans({
-  subsets: ["latin"],
-  variable: "--font-game",
-  weight: ["400"],
-});
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -42,7 +37,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning className="dark">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} ${gameFont.variable} ${inter.variable}`}
+          className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased font-inter`}
         >
           <Provider
             attribute="class"

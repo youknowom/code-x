@@ -9,16 +9,19 @@ import ExploreMoreCourse from "./_components/ExploreMoreCourse";
 
 function page() {
   return (
-    <div className="p-10 md:px-20 lg:px-32 xl:px-48">
-      <div className="grid grid-cols-3 gap-7">
-        <div className="col-span-2">
+    <div className="min-h-screen p-4 sm:p-6 md:p-10 lg:px-24 xl:px-32">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-8">
           <WelcomeBanner />
           <EnrolledCourses />
           <ExploreMore />
           <ExploreMoreCourse />
           <InviteFriend />
         </div>
-        <div>
+
+        {/* Sidebar */}
+        <div className="space-y-6 lg:sticky lg:top-6 lg:self-start">
           <UserStatus />
           <UpgradeToPro />
         </div>

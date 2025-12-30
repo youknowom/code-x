@@ -61,7 +61,7 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white font-game px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-4">
       {/* Rotating Cookie */}
       <div className="mb-6 animate-spin-normal">
         <Image
@@ -73,13 +73,15 @@ export default function NotFound() {
         />
       </div>
 
-      <h1 className="text-2xl mb-2 tracking-widest">SOMETHING WENT WRONG</h1>
+      <h1 className="text-2xl mb-2 tracking-widest font-bold">
+        SOMETHING WENT WRONG
+      </h1>
 
-      <p className="text-gray-400 mb-6 text-center">
+      <p className="text-gray-400 mb-6 text-center text-lg">
         You entered a wrong path 🚧
       </p>
 
-      <Button asChild variant="pixel" className="font-game text-2xl">
+      <Button asChild variant="pixel" className="font-semibold text-xl">
         <Link href="/">GO HOME</Link>
       </Button>
     </div>

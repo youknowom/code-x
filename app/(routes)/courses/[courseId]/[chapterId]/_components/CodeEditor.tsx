@@ -27,7 +27,7 @@ type Props = {
 const CodeEditorChildren = ({ onCompleteExercise, IsCompleted }: any) => {
   const { sandpack } = useSandpack();
   return (
-    <div className="font-game absolute bottom-40 flex gap-5 right-5">
+    <div className="absolute bottom-40 flex gap-5 right-5">
       <Button
         variant={"pixel"}
         className="text-xl"
@@ -74,7 +74,7 @@ function CodeEditor({ courseExerciseData, loading }: Props) {
 
       toast.success("Exercise Completed!");
     } catch (error) {
-      console.error("Error completing exercise:", error);
+      // Error handled by toast notification
       toast.error("Failed to complete exercise");
     }
   };

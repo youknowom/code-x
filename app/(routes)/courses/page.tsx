@@ -17,21 +17,20 @@ export default function Page() {
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 md:px-24 lg:px-36 bg-linear-to-r from-black/80 to-transparent">
-          <h2 className="font-game text-3xl sm:text-4xl md:text-6xl text-white">
+        <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 md:px-24 lg:px-36 bg-linear-to-r from-black/90 via-black/60 to-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white">
             Explore All Courses
           </h2>
 
-          <p className="font-game text-lg sm:text-xl md:text-2xl text-gray-200 mt-3 max-w-2xl">
-            Explore all courses and enroll to learn, build skills, and grow your
-            career.
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mt-4 max-w-2xl">
+            Discover courses to learn, build skills, and advance your career.
           </p>
         </div>
       </div>
 
       {/* Course List */}
       <div className="mt-10 px-6 sm:px-10 md:px-24 lg:px-36">
-        <h2 className="font-game text-4xl mb-6">All Courses</h2>
+        <h2 className="text-4xl font-bold mb-6">All Courses</h2>
         <CourseList />
       </div>
     </div>

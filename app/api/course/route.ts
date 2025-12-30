@@ -71,88 +71,107 @@ export async function GET(req: NextRequest) {
       courseEnrolledInfo: enrollCourse[0],
       completedExcercises: completedExcercises,
     });
-  }
-  else if(courseId=='enrolled'){
-    
-// 1️⃣ Fetch all enrolled courses for the user
-const enrolledCourses = await db
-    .select()
-    .from(enrolledCoursesTable)
-    .where(eq(enrolledCoursesTable.userId, userEmail));
+  } else if (courseId == "enrolled") {
+    if (!user?.primaryEmailAddress?.emailAddress) {
+      return NextResponse.json([]);
+    }
 
-if (enrolledCourses.length === 0) {
-    return NextResponse.json([]);
-}
+    const dbUser = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.email, user.primaryEmailAddress.emailAddress));
 
-// Extract courseIds
-const courseIds = enrolledCourses.map(c => c.courseId);
+    if (dbUser.length === 0) {
+      return NextResponse.json([]);
+    }
 
-// 2️⃣ Fetch all course details in one go
-const courses = await db
-    .select()
-    .from(coursesTable)
-    //@ts-ignore
-    .where(inArray(CourseTable.courseId, courseIds));
+    const userId = dbUser[0].id;
 
-// 3️⃣ Fetch chapters for all courses
-const chapters = await db
-    .select()
-    .from(courseChaptersTable)
-    //@ts-ignore
-    .where(inArray(CourseChaptersTable.courseId, courseIds))
-    .orderBy(asc(courseChaptersTable.chapterId));
+    // 1️⃣ Fetch all enrolled courses for the user
+    const enrolledCourses = await db
+      .select()
+      .from(enrolledCoursesTable)
+      .where(eq(enrolledCoursesTable.userId, userId));
 
-// 4️⃣ Fetch completed exercises for all courses
-const completed = await db
-    .select()
-    .from(completedExercisesTable)
-    //@ts-ignore
-    .where(and(inArray(CompletedExerciseTable.courseId, courseIds), eq(CompletedExerciseTable.userId, userEmail)))
-    .orderBy(
-        desc(completedExercisesTable.courseId),
-        desc(completedExercisesTable.exerciseId)
+    if (enrolledCourses.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    // Extract courseIds
+    const courseIds = enrolledCourses.map((c) => c.courseId);
+
+    // 2️⃣ Fetch all course details in one go
+    const courses = await db.select().from(coursesTable);
+
+    // Filter courses by courseIds
+    const filteredCourses = courses.filter((course) =>
+      courseIds.includes(course.courseId)
     );
 
-const finalResult = courses.map(course => {
-    const courseEnrollInfo = enrolledCourses.find(e => e.courseId === course.courseId);
+    // 3️⃣ Fetch chapters for all courses
+    const chapters = await db
+      .select()
+      .from(courseChaptersTable)
+      .orderBy(asc(courseChaptersTable.chapterId));
 
-    return {
+    const filteredChapters = chapters.filter((chapter) =>
+      courseIds.includes(chapter.courseId)
+    );
+
+    // 4️⃣ Fetch completed exercises for all courses
+    const completed = await db
+      .select()
+      .from(completedExercisesTable)
+      .where(eq(completedExercisesTable.userId, userId))
+      .orderBy(
+        desc(completedExercisesTable.courseId),
+        desc(completedExercisesTable.exerciseId)
+      );
+
+    const finalResult = filteredCourses.map((course) => {
+      const courseEnrollInfo = enrolledCourses.find(
+        (e) => e.courseId === course.courseId
+      );
+
+      return {
         ...course,
-        chapters: chapters.filter(ch => ch.courseId === course.courseId),
-        completedExercises: completed.filter(cx => cx.courseId === course.courseId),
+        chapters: filteredChapters.filter(
+          (ch) => ch.courseId === course.courseId
+        ),
+        completedExercises: completed.filter(
+          (cx) => cx.courseId === course.courseId
+        ),
         courseEnrolledInfo: courseEnrollInfo,
-        userEnrolled: true
-    };
-});
+        userEnrolled: true,
+      };
+    });
 
-// ⭐ Format output
-const formattedResult = finalResult.map(item => {
-    // Count total exercises by summing exercises arrays in all chapters
-    const totalExercises = item.chapters.reduce((acc, chapter) => {
+    // ⭐ Format output
+    const formattedResult = finalResult.map((item) => {
+      // Count total exercises by summing exercises arrays in all chapters
+      const totalExercises = item.chapters.reduce((acc, chapter) => {
         // If exercises is stored as JSON/array
-        const exercisesCount = Array.isArray(chapter.exercises) ? chapter.exercises.length : 0;
+        const exercisesCount = Array.isArray(chapter.exercises)
+          ? chapter.exercises.length
+          : 0;
         return acc + exercisesCount;
-    }, 0);
+      }, 0);
 
-    const completedExercises = item.completedExercises.length;
+      const completedExercises = item.completedExercises.length;
 
-    return {
+      return {
         courseId: item.courseId,
         title: item.title,
-        bannerImage:item?.bannerImage,
+        bannerImage: item?.bannerImage,
         totalExercises,
         completedExercises,
         xpEarned: item.courseEnrolledInfo?.xpEarned || 0,
-        level: item.level
-    };
-});
+        level: item.level,
+      };
+    });
 
-return NextResponse.json(formattedResult);
-
-  }
-
-  }
-  else {
+    return NextResponse.json(formattedResult);
+  } else {
     //fetch all courses
     const result = await db.select().from(coursesTable);
     return NextResponse.json(result);

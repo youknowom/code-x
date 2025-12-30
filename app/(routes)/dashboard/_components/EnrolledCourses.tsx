@@ -25,22 +25,22 @@ function EnrolledCourses() {
   );
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    GetUserEnrolledCourse;
+    GetUserEnrolledCourse();
   }, []);
   const GetUserEnrolledCourse = async () => {
     setLoading(true);
-    const result = await axios.get("/api/course?.courseid=enrolled");
+    const result = await axios.get("/api/course?courseId=enrolled");
     setEnrolledCourses(result.data);
     setLoading(false);
   };
   return (
     <div className="mt-8">
       {/* Heading */}
-      <h2 className="text-3xl sm:text-4xl font-game mb-4">
+      <h2 className="text-3xl sm:text-4xl font-bold mb-6">
         Your Enrolled Courses
       </h2>
-      {loading && <Skeleton className="w-full rounded-2xl my-5" />}
-      {enrolledCourses.length === 0 ? (
+      {loading && <Skeleton className="w-full h-[200px] rounded-2xl my-5" />}
+      {!loading && enrolledCourses.length === 0 ? (
         /* Empty State */
         <div className="flex flex-col items-center gap-4 p-8 border rounded-2xl bg-zinc-900 text-center">
           <Image
@@ -50,29 +50,21 @@ function EnrolledCourses() {
             height={90}
             className="opacity-90"
           />
-          <h2 className="font-game text-lg text-gray-300">
-            You don’t have any enrolled courses yet
+          <h2 className="text-lg text-gray-400">
+            You don't have any enrolled courses yet
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-5">
-            {enrolledCourses?.map((course, index) => {
-              <div>
-                <CourseProgressCard course-={course} />
-              </div>;
-            })}
-          </div>
-          :{" "}
           <Link href="/courses">
-            <Button variant="pixel" size="lg" className="font-game">
+            <Button variant="pixel" size="lg" className="font-semibold">
               Browse All Courses
             </Button>
           </Link>
         </div>
       ) : (
-        /* Course List (placeholder) */
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        /* Course List */
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {enrolledCourses.map((course, index) => (
-            <div key={index} className="p-4 border rounded-xl bg-zinc-800">
-              Course Card
+            <div key={index}>
+              <CourseProgressCard courses={course} />
             </div>
           ))}
         </div>

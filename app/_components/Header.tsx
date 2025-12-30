@@ -91,9 +91,12 @@ export default function Header() {
   return (
     <div className="p-4 max-w-7xl mx-auto flex justify-between items-center w-full">
       {/* Logo */}
-      <Link href="/" className="flex gap-2 items-center">
+      <Link
+        href="/"
+        className="flex gap-2 items-center hover:opacity-80 transition-opacity"
+      >
         <Image src="/logo.png" alt="logo" width={40} height={40} />
-        <h2 className="font-bold text-2xl font-game">CodeTree</h2>
+        <h2 className="font-bold text-2xl tracking-tight">CodeTree</h2>
       </Link>
 
       {/* Navigation */}
@@ -150,12 +153,12 @@ export default function Header() {
 
       {/* CTA */}
       {!user ? (
-        <Button asChild className="font-game text-2xl" variant="pixel">
+        <Button asChild className="text-lg font-semibold" variant="pixel">
           <Link href="/sign-in">Signup</Link>
         </Button>
       ) : (
         <div className="flex gap-4 items-center">
-          <Button asChild className="font-game text-2xl" variant="pixel">
+          <Button asChild className="text-lg font-semibold" variant="pixel">
             <Link href="/dashboard">Dashboard</Link>
           </Button>
           <UserButton />

@@ -49,26 +49,30 @@ function CourseDetailbanner({ loading, courseDetail, refreshData }: Props) {
         priority
       />
 
-      <div className="font-game absolute inset-0 pt-20 p-10 md:px-24 lg:px-36 bg-linear-to-r from-black/80 to-transparent">
-        <h2 className="text-6xl">{courseDetail.title}</h2>
+      <div className="absolute inset-0 pt-20 p-10 md:px-24 lg:px-36 bg-gradient-to-r from-black/90 via-black/70 to-transparent">
+        <h2 className="text-4xl md:text-6xl font-bold">{courseDetail.title}</h2>
 
-        <p className="text-3xl text-gray-300 mt-3">
+        <p className="text-xl md:text-2xl text-gray-200 mt-4 max-w-3xl">
           {courseDetail.description}
         </p>
 
         {!courseDetail?.userEnrolled ? (
           <Button
             variant="pixel"
-            className="font-game text-2xl mt-7"
+            className="font-semibold text-xl mt-8"
             size="lg"
             disabled={loading_}
             onClick={EnrolledCourse}
           >
-            {loading_ && <Loader2Icon className="animate-spin" />}
+            {loading_ && <Loader2Icon className="animate-spin mr-2" />}
             Enroll Now
           </Button>
         ) : (
-          <Button className="text-2xl mt-7" size={"lg"} variant={"pixel"}>
+          <Button
+            className="font-semibold text-xl mt-8"
+            size={"lg"}
+            variant={"pixel"}
+          >
             Continue Learning{" "}
           </Button>
         )}

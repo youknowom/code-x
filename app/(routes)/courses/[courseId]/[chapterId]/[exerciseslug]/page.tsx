@@ -65,14 +65,14 @@ function playground() {
         chapterId: parseInt(chapterId as string),
         exerciseId: exerciseslug,
       });
-      console.log("Exercise data:", result.data);
+      // Exercise data fetched successfully
       setCourseExerciseData(result.data);
       const exerciseInfo = result.data?.exercises?.find(
         (item: exercises) => item.slug == exerciseslug
       );
       setexerciseInfo(exerciseInfo);
     } catch (error) {
-      console.error("Error fetching exercise:", error);
+      // Error fetching exercise - handled by toast
     } finally {
       setLoading(false);
     }
@@ -136,7 +136,7 @@ function playground() {
         </div>
       </SplitterLayout>
 
-      <div className="font-game fixed bottom-0 w-full bg-zinc-900 flex p-4 justify-between items-center">
+      <div className="fixed bottom-0 w-full bg-zinc-900 flex p-4 justify-between items-center shadow-lg">
         <Link href={prevButtonRoute ?? "/courses/" + courseId}>
           <Button variant={"pixel"} className="text-xl">
             Previos

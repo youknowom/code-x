@@ -55,7 +55,7 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
 
       refreshData();
     } catch (error) {
-      console.error(error);
+      // Error handled by UI feedback
       toast.error("Failed to complete exercise");
     } finally {
       setCompletingExercise(null);
@@ -124,45 +124,55 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
   };
 
   return (
-    <div className="p-6 border-2 border-zinc-800 rounded-2xl bg-zinc-900">
-      <Accordion type="single" collapsible className="space-y-3">
+    <div className="p-6 border-2 border-zinc-800 rounded-2xl bg-zinc-900 shadow-lg">
+      <h2 className="text-2xl font-bold mb-6">Course Chapters</h2>
+      <Accordion type="single" collapsible className="space-y-4">
         {courseDetail.chapters.map((chapter, index) => (
           <AccordionItem
             key={index}
             value={`chapter-${index}`}
-            className="border border-zinc-800 rounded-xl overflow-hidden"
+            className="border-2 border-zinc-800 rounded-xl overflow-hidden bg-zinc-950 hover:border-zinc-700 transition-colors"
           >
-            <AccordionTrigger className="flex items-center gap-4 px-4 py-4 hover:bg-zinc-800 transition">
+            <AccordionTrigger className="flex items-center gap-4 px-6 py-5 hover:bg-zinc-800/50 transition-all">
               {/* Chapter Number */}
-              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-zinc-700 text-white font-bold">
+              <div className="flex items-center justify-center h-12 w-12 rounded-full bg-linear-to-br from-zinc-700 to-zinc-800 text-white font-bold text-lg shadow-md">
                 {index + 1}
               </div>
 
               {/* Chapter Title */}
-              <span className="text-xl font-semibold text-left flex-1">
+              <span className="text-lg font-bold text-left flex-1">
                 {chapter?.name}
               </span>
             </AccordionTrigger>
 
-            <AccordionContent className="px-6 py-4 text-gray-400 bg-zinc-950">
-              <div className="p-7 bg-zinc-900 rounded-2xl">
+            <AccordionContent className="px-6 py-6 bg-zinc-950">
+              <div className="space-y-4">
                 {chapter?.exercises.map((exc, indexExc) => (
                   <div
                     key={`${chapter.chapterId}-${indexExc}`}
-                    className="flex items-center justify-between mb-7"
+                    className="flex items-center justify-between p-5 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors"
                   >
-                    <div className="flex items-center gap-10 font-game">
-                      <h2 className="text-3xl">Excercise {indexExc + 1}</h2>
-                      <h2 className="text-3xl">{exc.name}</h2>
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                      <div className="shrink-0 w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center font-bold text-yellow-400">
+                        {indexExc + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold truncate">
+                          {exc.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          Exercise {indexExc + 1}
+                        </p>
+                      </div>
                     </div>
 
                     {isExerciseComplted(chapter?.chapterId, indexExc + 1) ? (
                       <Button
                         variant={"pixel"}
-                        className="bg-green-600"
+                        className="bg-green-600 hover:bg-green-600"
                         disabled
                       >
-                        Completed
+                        ✓ Completed
                       </Button>
                     ) : EnableExercise(
                         index,
@@ -204,13 +214,18 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                     ) : (
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button variant="pixelDisabled">???</Button>
+                          <Button
+                            variant="pixelDisabled"
+                            className="cursor-not-allowed"
+                          >
+                            🔒
+                          </Button>
                         </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="font-game text-lg">
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-sm font-medium">
                             {courseDetail?.userEnrolled
-                              ? "Complete previous exercises first"
-                              : "Please Enroll First"}
+                              ? "⚠️ Complete previous exercises first to unlock"
+                              : "⚠️ Please enroll in this course to start learning"}
                           </p>
                         </TooltipContent>
                       </Tooltip>
