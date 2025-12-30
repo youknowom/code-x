@@ -5,6 +5,7 @@ import ExploreMore from "./_components/ExploreMore";
 import InviteFriend from "./_components/InviteFriend";
 import UserStatus from "./_components/UserStatus";
 import UpgradeToPro from "./_components/UpgradeToPro";
+import ExploreMoreCourse from "./_components/ExploreMoreCourse";
 
 function page() {
   return (
@@ -13,7 +14,9 @@ function page() {
         <div className="col-span-2">
           <WelcomeBanner />
           <EnrolledCourses />
-          <ExploreMore /> <InviteFriend />
+          <ExploreMore />
+          <ExploreMoreCourse />
+          <InviteFriend />
         </div>
         <div>
           <UserStatus />

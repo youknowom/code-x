@@ -49,8 +49,10 @@ const levelColorMap: Record<NonNullable<Course["level"]>, string> = {
   Intermediate: "bg-yellow-500 text-black",
   Advanced: "bg-red-600",
 };
-
-function CourseList() {
+type Props = {
+  smallerCard?: boolean;
+};
+function CourseList({ smallerCard = false }: Props) {
   const [courseList, setCourseList] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -104,7 +106,7 @@ function CourseList() {
               alt={course.title}
               width={400}
               height={220}
-              className="w-full h-[220px] object-cover"
+              className={`w-full ${smallerCard?'h-[120px]:h-[200px]'}'h-[220px] object-cover rounded-t-lg' `}
             />
 
             {/* LEVEL BADGE */}
