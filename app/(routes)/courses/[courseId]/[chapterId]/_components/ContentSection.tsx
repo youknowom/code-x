@@ -11,7 +11,7 @@ function ContentSection({ courseExerciseData, loading }: Props) {
   const contentInfo = courseExerciseData?.ExerciseData;
 
   return (
-    <div className="p-10">
+    <div className="p-10 mb-28">
       {loading || !contentInfo ? (
         <Skeleton className="h-full w-full m-10 rounded-2xl" />
       ) : (

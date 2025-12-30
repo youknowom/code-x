@@ -4,9 +4,15 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import "react-splitter-layout/lib/index.css";
 import axios from "axios";
-import { exercises } from "../../../_components/CourseList";
+import {
+  completedExcercises,
+  exercises,
+} from "../../../_components/CourseList";
 import ContentSection from "../_components/ContentSection";
 import CodeEditor from "../_components/CodeEditor";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 export type CourseExercise = {
   chapterId: number;
@@ -15,6 +21,7 @@ export type CourseExercise = {
   name: string;
   exercises: exercises[];
   ExerciseData: ExerciseData;
+  completedExercise: completedExcercises[];
 };
 type ExerciseData = {
   chapterId: number;
@@ -42,6 +49,9 @@ function playground() {
 
   const [courseExerciseData, setCourseExerciseData] =
     useState<CourseExercise>();
+  const [nextButtonRoute, setNextButtonRoute] = useState<string>();
+  const [prevButtonRoute, setPrevButtonRoute] = useState<string>();
+  const [exerciseInfo, setexerciseInfo] = useState<exercises>();
   useEffect(() => {
     GetExerciseCourseDetail();
   }, [courseId, chapterId, exerciseslug]);
@@ -56,11 +66,57 @@ function playground() {
       });
       console.log("Exercise data:", result.data);
       setCourseExerciseData(result.data);
+      const exerciseInfo = result.data?.exercises?.find(
+        (item: exercises) => item.slug == exerciseslug
+      );
+      setexerciseInfo(exerciseInfo);
     } catch (error) {
       console.error("Error fetching exercise:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "empty";
+    };
+  }, []);
+
+  const GetExerciseDetail = () => {
+    const exerciseInfo = courseExerciseData?.exercises?.find(
+      (item) => item.slug == exerciseslug
+    );
+    setexerciseInfo(exerciseInfo);
+  };
+
+  const GetPrevNextButtonRoute = () => {
+    //cuurent index of exe
+
+    const CurrentExerciseIndex =
+      courseExerciseData?.exercises?.findIndex(
+        (item) => item.slug == exerciseslug
+      ) ?? 0;
+
+    const NextExercise =
+      courseExerciseData?.exercises[CurrentExerciseIndex + 1].slug;
+
+    const PrevExercise =
+      courseExerciseData?.exercises[CurrentExerciseIndex - 1].slug;
+
+    setNextButtonRoute(
+      NextExercise
+        ? "/courses/" + courseId + "/" + chapterId + "/" + NextExercise
+        : undefined
+    );
+
+    setPrevButtonRoute(
+      PrevExercise
+        ? "/courses/" + courseId + "/" + chapterId + "/" + PrevExercise
+        : undefined
+    );
   };
   return (
     <div className="border-t-4">
@@ -78,6 +134,25 @@ function playground() {
           />
         </div>
       </SplitterLayout>
+
+      <div className="font-game fixed bottom-0 w-full bg-zinc-900 flex p-4 justify-between items-center">
+        <Link href={prevButtonRoute ?? "/courses/" + courseId}>
+          <Button variant={"pixel"} className="text-xl">
+            Previos
+          </Button>
+        </Link>
+        <div className="flex gap-3 items-center">
+          <Image src={"/star.png"} alt="start" width={40} height={40} />
+          <h2 className="text-2xl">
+            You can earn{exerciseInfo?.xp} <span className="text-3xl">XP</span>
+          </h2>
+        </div>
+        <Link href={nextButtonRoute ?? "/courses" + courseId}>
+          <Button variant={"pixel"} className="text-xl">
+            Next
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
