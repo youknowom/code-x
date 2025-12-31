@@ -6,8 +6,11 @@ import {
   SandpackPreview,
   useSandpack,
 } from "@codesandbox/sandpack-react";
-import dynamic from "next/dynamic";
-import "react-splitter-layout/lib/index.css";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { CourseExercise } from "../[exerciseslug]/page";
 import { Button } from "@/components/ui/button";
 import { nightOwl } from "@codesandbox/sandpack-themes";
@@ -15,10 +18,6 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
 import { Play, CheckCircle2 } from "lucide-react";
-
-const SplitterLayout = dynamic(() => import("react-splitter-layout"), {
-  ssr: false,
-});
 
 type Props = {
   courseExerciseData: CourseExercise | undefined;
@@ -114,30 +113,29 @@ function CodeEditor({ courseExerciseData, loading }: Props) {
         }}
       >
         <div className="flex-1 overflow-hidden">
-          <SplitterLayout
-            vertical
-            percentage
-            primaryMinSize={30}
-            secondaryMinSize={20}
-            secondaryInitialSize={50}
-          >
-            <div className="h-full overflow-hidden">
-              <SandpackCodeEditor
-                showTabs
-                showLineNumbers
-                style={{ height: "100%" }}
-              />
-            </div>
-            <div className="h-full overflow-hidden">
-              <SandpackPreview
-                showNavigator
-                showOpenInCodeSandbox={false}
-                showOpenNewtab
-                showRefreshButton
-                style={{ height: "100%" }}
-              />
-            </div>
-          </SplitterLayout>
+          <ResizablePanelGroup direction="vertical">
+            <ResizablePanel defaultSize={50} minSize={30}>
+              <div className="h-full overflow-hidden">
+                <SandpackCodeEditor
+                  showTabs
+                  showLineNumbers
+                  style={{ height: "100%" }}
+                />
+              </div>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={50} minSize={20}>
+              <div className="h-full overflow-hidden">
+                <SandpackPreview
+                  showNavigator
+                  showOpenInCodeSandbox={false}
+                  showOpenNewtab
+                  showRefreshButton
+                  style={{ height: "100%" }}
+                />
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </div>
         <CodeEditorChildren
           onCompleteExercise={onCompleteExercise}

@@ -76,6 +76,10 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
     }
 
     // Check if chapter requires premium (chapters 2+ need pro)
+    if (!courseDetail.chapters) {
+      return false;
+    }
+
     const chapterIndex = courseDetail.chapters.findIndex(
       (ch) => ch.chapterId === currentChapterId
     );
@@ -87,9 +91,11 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
 
     // If nothing is completed, enable FIRST exercise of FIRST chapter ONLY
     if (!completed || completed.length === 0) {
-      const firstChapter = courseDetail.chapters[0];
+      const firstChapter = courseDetail.chapters?.[0];
       return (
-        currentChapterId === firstChapter.chapterId && currentExerciseId === 1
+        firstChapter &&
+        currentChapterId === firstChapter.chapterId &&
+        currentExerciseId === 1
       );
     }
 
@@ -107,7 +113,7 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
     const last = completed[completed.length - 1];
 
     // Check if this is the next exercise after the last completed one
-    const lastCompletedChapter = courseDetail.chapters.find(
+    const lastCompletedChapter = courseDetail.chapters?.find(
       (ch) => ch.chapterId === last.chapterId
     );
 

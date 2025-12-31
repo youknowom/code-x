@@ -1,8 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import "react-splitter-layout/lib/index.css";
 import axios from "axios";
 import {
   completedExcercises,
@@ -13,6 +11,11 @@ import CodeEditor from "../_components/CodeEditor";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 export type CourseExercise = {
   chapterId: number;
@@ -39,9 +42,6 @@ type ExerciseContent = {
   startCode: any;
   task: string;
 };
-const SplitterLayout = dynamic(() => import("react-splitter-layout"), {
-  ssr: false,
-});
 
 function playground() {
   //
@@ -121,20 +121,21 @@ function playground() {
   };
   return (
     <div className="border-t-4 pb-20">
-      <SplitterLayout percentage primaryMinSize={40} secondaryInitialSize={60}>
-        <div>
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={40} minSize={30}>
           <ContentSection
             courseExerciseData={courseExerciseData}
             loading={loading}
           />
-        </div>
-        <div>
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize={60} minSize={40}>
           <CodeEditor
             courseExerciseData={courseExerciseData}
             loading={loading}
           />
-        </div>
-      </SplitterLayout>
+        </ResizablePanel>
+      </ResizablePanelGroup>
 
       <div className="fixed bottom-0 w-full bg-zinc-900 flex p-4 justify-between items-center shadow-lg z-20 border-t-2 border-zinc-800">
         <Link href={prevButtonRoute ?? "/courses/" + courseId}>
