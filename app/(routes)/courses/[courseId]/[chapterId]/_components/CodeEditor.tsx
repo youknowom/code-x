@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SandpackProvider,
   SandpackLayout,
@@ -14,6 +14,7 @@ import { nightOwl } from "@codesandbox/sandpack-themes";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
+import { Play, CheckCircle2 } from "lucide-react";
 
 const SplitterLayout = dynamic(() => import("react-splitter-layout"), {
   ssr: false,
@@ -26,37 +27,52 @@ type Props = {
 
 const CodeEditorChildren = ({ onCompleteExercise, IsCompleted }: any) => {
   const { sandpack } = useSandpack();
+  const [running, setRunning] = useState(false);
+
+  const handleRun = async () => {
+    setRunning(true);
+    await sandpack.runSandpack();
+    setTimeout(() => setRunning(false), 500);
+  };
+
   return (
-    <div className="absolute bottom-40 flex gap-5 right-5">
+    <div className="border-t border-zinc-800 bg-zinc-900 px-4 py-3 flex justify-end items-center gap-3 relative z-10">
       <Button
         variant={"pixel"}
-        className="text-xl"
-        onClick={() => sandpack.runSandpack()}
-        size={"lg"}
+        onClick={handleRun}
+        disabled={running}
+        className="flex items-center gap-2"
       >
-        Run code
+        <Play className="w-4 h-4" />
+        {running ? "Running..." : "Run Code"}
       </Button>
       <Button
         variant={"pixel"}
-        size={"lg"}
-        className="bg-[#a3e534] text-xl"
+        className={`flex items-center gap-2 ${
+          IsCompleted
+            ? "bg-green-600 hover:bg-green-600"
+            : "bg-[#a3e534] hover:bg-[#92d42d]"
+        }`}
         onClick={() => onCompleteExercise()}
         disabled={IsCompleted}
       >
-        {IsCompleted ? "Already completed !" : "mark completed"}
+        <CheckCircle2 className="w-4 h-4" />
+        {IsCompleted ? "Completed ✓" : "Mark Completed"}
       </Button>
     </div>
   );
 };
 
 function CodeEditor({ courseExerciseData, loading }: Props) {
-  const { exerciseslug } = useParams();
+  const { exerciseslug, chapterId } = useParams();
   const exerciseIndex = courseExerciseData?.exercises?.findIndex(
     (item) => item.slug == exerciseslug
   );
 
   const IsCompleted = courseExerciseData?.completedExercise?.find(
-    (item) => item?.exerciseId == Number(exerciseIndex) + 1
+    (item) =>
+      item?.chapterId == Number(chapterId) &&
+      item?.exerciseId == Number(exerciseIndex) + 1
   );
 
   const onCompleteExercise = async () => {
@@ -72,7 +88,7 @@ function CodeEditor({ courseExerciseData, loading }: Props) {
         xpEarned: courseExerciseData.exercises[exerciseIndex].xp,
       });
 
-      toast.success("Exercise Completed!");
+      toast.success("Exercise Completed! 🎉");
     } catch (error) {
       // Error handled by toast notification
       toast.error("Failed to complete exercise");
@@ -80,34 +96,53 @@ function CodeEditor({ courseExerciseData, loading }: Props) {
   };
 
   return (
-    <div className="relative h-full">
+    <div className="h-full flex flex-col">
       <SandpackProvider
         theme={nightOwl}
         //@ts-ignore
-        template={courseExerciseData?.editorType}
-        style={{ height: "100vh" }}
+        template={courseExerciseData?.editorType || "static"}
         files={
           courseExerciseData?.ExerciseData?.exerciseContent?.startCode || {}
         }
-        options={{ autorun: false, autoReload: false }}
+        options={{
+          autorun: false,
+          autoReload: false,
+          activeFile:
+            Object.keys(
+              courseExerciseData?.ExerciseData?.exerciseContent?.startCode || {}
+            )[0] || "/index.html",
+        }}
       >
-        <SandpackLayout style={{ height: "100%" }}>
-          <SplitterLayout>
-            <div className="relative">
-              <SandpackCodeEditor showTabs style={{ height: "100%" }} />
-              <CodeEditorChildren
-                onCompleteExercise={onCompleteExercise}
-                IsCompleted={IsCompleted}
+        <div className="flex-1 overflow-hidden">
+          <SplitterLayout
+            vertical
+            percentage
+            primaryMinSize={30}
+            secondaryMinSize={20}
+            secondaryInitialSize={50}
+          >
+            <div className="h-full overflow-hidden">
+              <SandpackCodeEditor
+                showTabs
+                showLineNumbers
+                style={{ height: "100%" }}
               />
             </div>
-            <SandpackPreview
-              showNavigator
-              showOpenInCodeSandbox={false}
-              showOpenNewtab
-              style={{ height: "100%" }}
-            />
+            <div className="h-full overflow-hidden">
+              <SandpackPreview
+                showNavigator
+                showOpenInCodeSandbox={false}
+                showOpenNewtab
+                showRefreshButton
+                style={{ height: "100%" }}
+              />
+            </div>
           </SplitterLayout>
-        </SandpackLayout>
+        </div>
+        <CodeEditorChildren
+          onCompleteExercise={onCompleteExercise}
+          IsCompleted={IsCompleted}
+        />
       </SandpackProvider>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function CommunityHelpSection() {
   return (
@@ -16,13 +17,14 @@ function CommunityHelpSection() {
           </p>
         </div>
       </div>
-
-      <Button
-        variant={"pixel"}
-        className="text-lg font-semibold px-6 py-5 w-full md:w-auto"
-      >
-        💬 Go to Community
-      </Button>
+      <Link href={"https://discord.gg/z7XVq8K48G"}>
+        <Button
+          variant={"pixel"}
+          className="text-lg font-semibold px-6 py-5 w-full md:w-auto"
+        >
+          💬 Go to Community
+        </Button>
+      </Link>
     </div>
   );
 }

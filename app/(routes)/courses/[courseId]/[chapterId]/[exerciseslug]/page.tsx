@@ -120,7 +120,7 @@ function playground() {
     );
   };
   return (
-    <div className="border-t-4">
+    <div className="border-t-4 pb-20">
       <SplitterLayout percentage primaryMinSize={40} secondaryInitialSize={60}>
         <div>
           <ContentSection
@@ -136,7 +136,7 @@ function playground() {
         </div>
       </SplitterLayout>
 
-      <div className="fixed bottom-0 w-full bg-zinc-900 flex p-4 justify-between items-center shadow-lg">
+      <div className="fixed bottom-0 w-full bg-zinc-900 flex p-4 justify-between items-center shadow-lg z-20 border-t-2 border-zinc-800">
         <Link href={prevButtonRoute ?? "/courses/" + courseId}>
           <Button variant={"pixel"} className="text-xl">
             Previos

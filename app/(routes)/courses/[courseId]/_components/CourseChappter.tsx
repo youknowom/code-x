@@ -67,33 +67,66 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
   };
 
   const EnableExercise = (
-    chapterIndex: number,
-    exerciseIndex: number,
-    chapterExercisesLength: number
+    currentChapterId: number,
+    currentExerciseId: number
   ) => {
     // User must be enrolled to do exercises
     if (!courseDetail?.userEnrolled) {
       return false;
     }
 
-    const completed = courseDetail?.completedExcercises;
-
-    // If nothing is completed, enable FIRST exercise ONLY
-    if (!completed || completed.length === 0) {
-      return chapterIndex === 0 && exerciseIndex === 0;
+    // Check if chapter requires premium (chapters 2+ need pro)
+    const chapterIndex = courseDetail.chapters.findIndex(
+      (ch) => ch.chapterId === currentChapterId
+    );
+    if (chapterIndex >= 2 && !hasPremiumAccess) {
+      return false;
     }
 
-    // last completed
+    const completed = courseDetail?.completedExcercises;
+
+    // If nothing is completed, enable FIRST exercise of FIRST chapter ONLY
+    if (!completed || completed.length === 0) {
+      const firstChapter = courseDetail.chapters[0];
+      return (
+        currentChapterId === firstChapter.chapterId && currentExerciseId === 1
+      );
+    }
+
+    // Check if this exercise is already completed
+    const isAlreadyCompleted = completed.find(
+      (item) =>
+        item.chapterId === currentChapterId &&
+        item.exerciseId === currentExerciseId
+    );
+    if (isAlreadyCompleted) {
+      return true; // Already completed, can access
+    }
+
+    // Find the last completed exercise
     const last = completed[completed.length - 1];
 
-    // Convert to global exercise number
-    const currentExerciseNumber =
-      chapterIndex * chapterExercisesLength + exerciseIndex + 1;
+    // Check if this is the next exercise after the last completed one
+    const lastCompletedChapter = courseDetail.chapters.find(
+      (ch) => ch.chapterId === last.chapterId
+    );
 
-    const lastCompletedNumber =
-      (last.chapterId - 1) * chapterExercisesLength + last.exerciseId;
+    if (!lastCompletedChapter) return false;
 
-    return currentExerciseNumber === lastCompletedNumber + 1;
+    // If it's the next exercise in the same chapter
+    if (currentChapterId === last.chapterId) {
+      return currentExerciseId === last.exerciseId + 1;
+    }
+
+    // If it's the first exercise of the next chapter
+    if (currentChapterId === last.chapterId + 1) {
+      // Check if all exercises in previous chapter are completed
+      const allPrevCompleted =
+        lastCompletedChapter.exercises.length === last.exerciseId;
+      return allPrevCompleted && currentExerciseId === 1;
+    }
+
+    return false;
   };
 
   // Loading state
@@ -150,7 +183,11 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                 </span>
               </AccordionTrigger>
               {!hasPremiumAccess && index >= 2 && (
-                <h2 className="text-3xl text-yellow-300">Pro</h2>
+                <div className="flex items-center gap-2 mr-4">
+                  <span className="px-3 py-1 rounded-full bg-yellow-400 text-black text-sm font-bold">
+                    PRO
+                  </span>
+                </div>
               )}
             </div>
 
@@ -183,11 +220,7 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                       >
                         ✓ Completed
                       </Button>
-                    ) : EnableExercise(
-                        index,
-                        indexExc,
-                        chapter?.exercises?.length
-                      ) ? (
+                    ) : EnableExercise(chapter?.chapterId, indexExc + 1) ? (
                       <Link
                         href={
                           "/courses/" +
@@ -198,27 +231,7 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                           exc?.slug
                         }
                       >
-                        <Button
-                          variant={"pixel"}
-                          onClick={() =>
-                            handleCompleteExercise(
-                              chapter?.chapterId,
-                              indexExc + 1,
-                              exc?.xp
-                            )
-                          }
-                          disabled={
-                            completingExercise ===
-                            `${chapter?.chapterId}-${indexExc + 1}`
-                          }
-                        >
-                          {completingExercise ===
-                          `${chapter?.chapterId}-${indexExc + 1}` ? (
-                            <Loader2Icon className="animate-spin" />
-                          ) : (
-                            `${exc?.xp}xp`
-                          )}
-                        </Button>
+                        <Button variant={"pixel"}>{exc?.xp}xp</Button>
                       </Link>
                     ) : (
                       <Tooltip>
@@ -232,11 +245,11 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                         </TooltipTrigger>
                         <TooltipContent className="max-w-xs">
                           <p className="text-sm font-medium">
-                            {courseDetail?.userEnrolled &&
-                            !hasPremiumAccess &&
-                            index < 2
-                              ? "⚠️ Complete previous exercises first to unlock"
-                              : "⚠️ Please enroll in this course to start learning"}
+                            {!courseDetail?.userEnrolled
+                              ? "⚠️ Please enroll in this course to start learning"
+                              : index >= 2 && !hasPremiumAccess
+                              ? "⭐ Upgrade to Pro to unlock chapters 3+"
+                              : "⚠️ Complete previous exercises first to unlock"}
                           </p>
                         </TooltipContent>
                       </Tooltip>
