@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { fireConfetti } from "@/components/ConfettiBlast";
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 
 type Props = {
   loading: boolean;
@@ -26,6 +27,9 @@ type Props = {
 };
 
 function CourseChapter({ loading, courseDetail, refreshData }: Props) {
+  const { has } = useAuth();
+  const hasPremiumAccess = has && has({ plan: "pro" });
+
   const [completingExercise, setCompletingExercise] = useState<string | null>(
     null
   );
@@ -133,17 +137,22 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
             value={`chapter-${index}`}
             className="border-2 border-zinc-800 rounded-xl overflow-hidden bg-zinc-950 hover:border-zinc-700 transition-colors"
           >
-            <AccordionTrigger className="flex items-center gap-4 px-6 py-5 hover:bg-zinc-800/50 transition-all">
-              {/* Chapter Number */}
-              <div className="flex items-center justify-center h-12 w-12 rounded-full bg-linear-to-br from-zinc-700 to-zinc-800 text-white font-bold text-lg shadow-md">
-                {index + 1}
-              </div>
+            <div className="flex items-center justify-between w-full">
+              <AccordionTrigger className="flex items-center gap-4 px-6 py-5 hover:bg-zinc-800/50 transition-all">
+                {/* Chapter Number */}
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-linear-to-br from-zinc-700 to-zinc-800 text-white font-bold text-lg shadow-md">
+                  {index + 1}
+                </div>
 
-              {/* Chapter Title */}
-              <span className="text-lg font-bold text-left flex-1">
-                {chapter?.name}
-              </span>
-            </AccordionTrigger>
+                {/* Chapter Title */}
+                <span className="text-lg font-bold text-left flex-1">
+                  {chapter?.name}
+                </span>
+              </AccordionTrigger>
+              {!hasPremiumAccess && index >= 2 && (
+                <h2 className="text-3xl text-yellow-300">Pro</h2>
+              )}
+            </div>
 
             <AccordionContent className="px-6 py-6 bg-zinc-950">
               <div className="space-y-4">
@@ -223,7 +232,9 @@ function CourseChapter({ loading, courseDetail, refreshData }: Props) {
                         </TooltipTrigger>
                         <TooltipContent className="max-w-xs">
                           <p className="text-sm font-medium">
-                            {courseDetail?.userEnrolled
+                            {courseDetail?.userEnrolled &&
+                            !hasPremiumAccess &&
+                            index < 2
                               ? "⚠️ Complete previous exercises first to unlock"
                               : "⚠️ Please enroll in this course to start learning"}
                           </p>
